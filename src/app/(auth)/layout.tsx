@@ -1,4 +1,4 @@
-import AuthAside from "./_components/auth-aside/auth-aside";
+import AuthAside from "./_components/aside/aside";
 
 export default function AuthLayout({
   children,

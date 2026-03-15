@@ -1,6 +1,6 @@
 import ExamAppLogo from "@/components/ui/shared/exam-app-logo";
-import AuthAsideHeader from "./auth-aside-header";
-import AuthFeature from "./auth-feature";
+import AuthAsideHeader from "./aside-header";
+import AuthFeature from "./feature";
 import { Brain, BookOpenCheck, RectangleEllipsis } from "lucide-react";
 
 const features = [
