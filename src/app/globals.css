@@ -123,7 +123,9 @@
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
-  }
+}
+
+@theme {
+  --font-geist-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
 }
