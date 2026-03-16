@@ -6,13 +6,13 @@ interface NavgateLinkProps {
   linkText: string;
 }
 
-export default function NavgateLink({
+export default function NavigateLink({
   text,
   href,
   linkText,
 }: NavgateLinkProps) {
   return (
-    <p className="font-geist-mono text-sm font-medium text-gray-500 text-center">
+    <p className="font-geist-mono text-sm font-medium text-gray-500">
       {text}
       <Link href={href} className="text-primary">
         {" "}
