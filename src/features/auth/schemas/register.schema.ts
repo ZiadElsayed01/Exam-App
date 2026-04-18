@@ -5,7 +5,7 @@ export const emailSchema = z
   .object({
     email: z
       .string()
-      .email("email must be contain @ and .com")
+      .email("Invalid email format")
       .nonempty("Email is required"),
   })
   .strict();
@@ -13,7 +13,7 @@ export const emailSchema = z
 // OTP verification schema
 export const otpSchema = z
   .object({
-    email: z.string("Invalid email"),
+    email: z.string().email("Invalid email format"),
     code: z
       .string()
       .length(6, "OTP must be 6 digits")
@@ -25,7 +25,7 @@ export const otpSchema = z
 export const userInfoSchema = z
   .object({
     username: z.string("Invalid username").nonempty("Username is required"),
-    email: z.string("Invalid email"),
+    email: z.string().email("Invalid email format"),
     firstName: z
       .string("Invalid first name")
       .nonempty("First name is required"),
@@ -50,7 +50,7 @@ export const passwordSchema = z
 export const registerSchema = z
   .object({
     username: z.string("Invalid username").nonempty("Username is required"),
-    email: z.string("Invalid email"),
+    email: z.string().email("Invalid email format"),
     password: z.string("Invalid password").nonempty("Password is required"),
     confirmPassword: z.string().nonempty("Confirm password is required"),
     firstName: z

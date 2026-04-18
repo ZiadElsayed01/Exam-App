@@ -7,13 +7,14 @@ import {
   RegisterResponse,
   SendEmailVerificationResponse,
   VerifyEmailResponse,
+  ForgotPasswordResponse,
 } from "../types/auth";
 import { HEADERS } from "@/shared/constants/api-headers.constants";
 import {
   EmailFormData,
   OtpFormData,
   RegisterFormData,
-} from "../schemas/register.schma";
+} from "../schemas/register.schema";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -73,6 +74,20 @@ export const register = async (values: RegisterFormData) => {
   });
 
   const data: ApiResponse<RegisterResponse> = await response.json();
+
+  return data;
+};
+
+export const forgotPassword = async (values: EmailFormData) => {
+  const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+    method: "POST",
+    body: JSON.stringify({ email: values.email }),
+    headers: {
+      ...HEADERS.JSON,
+    },
+  });
+
+  const data: ForgotPasswordResponse = await response.json();
 
   return data;
 };

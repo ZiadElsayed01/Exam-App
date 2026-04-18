@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { verifyEmail } from "../../apis/auth.api";
-import { OtpFormData } from "../../schemas/register.schma";
+import { OtpFormData } from "../../schemas/register.schema";
 
 export default function useVerifyOtp() {
   //Mutation

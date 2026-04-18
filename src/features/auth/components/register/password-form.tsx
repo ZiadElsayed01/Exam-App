@@ -16,7 +16,7 @@ import {
   PasswordFormData,
   RegisterFormData,
   passwordSchema,
-} from "../../schemas/register.schma";
+} from "../../schemas/register.schema";
 import useRegister from "../../hooks/register/use-register";
 import FallbackError from "@/shared/components/global/fallback-error";
 

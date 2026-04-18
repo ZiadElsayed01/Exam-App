@@ -10,7 +10,7 @@ import useSendOtp from "../../hooks/register/use-send-otp";
 import { Loader2 } from "lucide-react";
 import FallbackError from "@/shared/components/global/fallback-error";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OtpFormData, otpSchema } from "../../schemas/register.schma";
+import { OtpFormData, otpSchema } from "../../schemas/register.schema";
 import { Controller, useForm } from "react-hook-form";
 import useVerifyOtp from "../../hooks/register/use-verify-otp";
 

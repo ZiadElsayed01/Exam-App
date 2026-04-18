@@ -14,7 +14,7 @@ import {
   UserInfoFormData,
   userInfoSchema,
   RegisterFormData,
-} from "../../schemas/register.schma";
+} from "../../schemas/register.schema";
 import { PhoneInput } from "../../../../shared/components/ui/phone-input";
 
 interface UserInfoProps {

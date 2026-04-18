@@ -1,5 +1,4 @@
 "use client";
-import FallbackError from "@/shared/components/global/fallback-error";
 import { Button } from "@/shared/components/ui/button";
 import {
   Field,
@@ -9,34 +8,29 @@ import {
 } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronRight, Loader2 } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import useSendOtp from "../../hooks/register/use-send-otp";
 import { EmailFormData, emailSchema } from "../../schemas/register.schema";
-import useOtpCounter from "../../hooks/register/use-otp-counter";
+import { ChevronRight, Loader2 } from "lucide-react";
+import FallbackError from "@/shared/components/global/fallback-error";
+import Link from "next/link";
+// import { useForgotPassword } from "../../hooks/use-forgot-password";
+import { useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
+import useForgotPassword from "../../hooks/forgot-password/use-forgot-password";
+import { useEffect } from "react";
+import { useRef } from "react";
 
-interface RegisterEmailInputProps {
+interface ForgotEmailInputProps {
   setStep: (step: string) => void;
   setEmail: (email: string) => void;
-  autoFocus?: boolean;
 }
 
-export default function EmailInput({
+export default function ForgotEmailInput({
   setStep,
   setEmail,
-  autoFocus = false,
-}: RegisterEmailInputProps) {
-  const { mutate: sendOtp, isPending, error } = useSendOtp();
-  const { setInLocalStorage, getRemainingTime } = useOtpCounter();
-  const emailInputRef = useRef<HTMLInputElement>(null);
+}: ForgotEmailInputProps) {
+  const { mutate: forgotPassword, isPending, error } = useForgotPassword();
 
-  useEffect(() => {
-    if (autoFocus && emailInputRef.current) {
-      emailInputRef.current.focus();
-    }
-  }, [autoFocus]);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<{
     email: string;
@@ -47,26 +41,18 @@ export default function EmailInput({
     },
   });
 
-  const onSubmit = async (data: EmailFormData) => {
-    const remaining = getRemainingTime(data.email);
-
-    if (remaining && remaining > 0) {
-      setEmail(data.email);
-      setStep("verify-otp");
-      return;
-    }
-
-    sendOtp(
-      { email: data.email },
-      {
-        onSuccess: () => {
-          setInLocalStorage(data.email);
-          setEmail(data.email);
-          setStep("verify-otp");
-        },
+  const onSubmit = (values: EmailFormData) => {
+    forgotPassword(values, {
+      onSuccess: () => {
+        setEmail(values.email);
+        setStep("reset-link");
       },
-    );
+    });
   };
+
+  useEffect(() => {
+    emailInputRef.current?.focus();
+  }, []);
 
   return (
     <>
@@ -85,12 +71,12 @@ export default function EmailInput({
                 <Input
                   {...field}
                   id="email"
-                  ref={emailInputRef}
                   aria-invalid={fieldState.invalid}
                   type="string"
                   autoComplete="email"
                   placeholder="user@example.com"
                   className={fieldState.invalid ? "border-destructive" : ""}
+                  ref={emailInputRef}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -102,20 +88,18 @@ export default function EmailInput({
 
         {/* Next Button */}
         <Button
-          variant="secondary"
+          variant="default"
           type="submit"
           className="mt-10"
           disabled={
-            isPending ||
-            Object.keys(form.formState.errors).length > 0 ||
-            (form.formState.isSubmitted && !form.formState.isValid)
+            isPending || (form.formState.isSubmitted && !form.formState.isValid)
           }
         >
           {isPending ? (
-            <Loader2 className="w-5 h-5 animate-spin text-primary" />
+            <Loader2 className="w-5 h-5 animate-spin text-white" />
           ) : (
             <>
-              Next <ChevronRight className="text-gray-800" />
+              Next <ChevronRight className="text-white" />
             </>
           )}
         </Button>
@@ -126,10 +110,10 @@ export default function EmailInput({
 
       {/* Login Link */}
       <p className="text-sm font-medium text-gray-500 text-center mt-9">
-        Already have an account?
-        <Link href="/login" className="text-primary">
+        Don&apos;t have an account?
+        <Link href="/register" className="text-primary">
           {" "}
-          Login
+          Create yours
         </Link>
       </p>
     </>

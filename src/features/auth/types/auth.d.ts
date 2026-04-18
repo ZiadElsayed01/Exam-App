@@ -1,6 +1,6 @@
 import { IUser } from "./user";
 import { loginSchema } from "../schemas/login.schema";
-import { registerSchema } from "../schemas/register.schma";
+import { registerSchema } from "../schemas/register.schema";
 import { z } from "zod";
 
 export type LoginCredentials = z.infer<typeof loginSchema>;
@@ -28,4 +28,8 @@ export interface VerifyEmailResponse {
   code: string;
 }
 
-
+export interface ForgotPasswordResponse {
+  status: boolean;
+  message: string;
+  code: string;
+}

@@ -5,7 +5,7 @@ import PasswordForm from "@/features/auth/components/register/password-form";
 import UserInfo from "@/features/auth/components/register/user-info";
 import ProgressIndicator from "@/shared/components/global/progress-indicator";
 import { useState } from "react";
-import { RegisterFormData } from "@/features/auth/schemas/register.schma";
+import { RegisterFormData } from "@/features/auth/schemas/register.schema";
 
 export default function RegisterPage() {
   const [step, setStep] = useState("email");

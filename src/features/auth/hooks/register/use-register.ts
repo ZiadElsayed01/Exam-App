@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { register } from "../../apis/auth.api";
-import { RegisterFormData } from "../../schemas/register.schma";
+import { RegisterFormData } from "../../schemas/register.schema";
 
 export default function useRegister() {
   //Mutation
