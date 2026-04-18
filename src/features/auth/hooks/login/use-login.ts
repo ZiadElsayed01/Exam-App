@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { LoginCredentials } from "../types/auth";
+import { LoginCredentials } from "../../types/auth";
 import { signIn } from "next-auth/react";
 
 export default function useLogin() {

@@ -12,8 +12,9 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/shared/components/ui/button";
-import useLogin from "../../hooks/use-login";
-import FallbackError from "@/shared/components/fallback-error";
+import useLogin from "../../hooks/login/use-login";
+import FallbackError from "@/shared/components/global/fallback-error";
+import { Loader2 } from "lucide-react";
 
 export default function LoginForm() {
   const { mutate: login, isPending, error } = useLogin();
@@ -78,6 +79,7 @@ export default function LoginForm() {
         />
       </FieldGroup>
 
+      {/* Forgot Password Link */}
       <Link
         href="/forgot-password"
         className="block mt-2.5 w-full text-right text-primary text-sm font-medium"
@@ -85,6 +87,7 @@ export default function LoginForm() {
         Forgot Password?
       </Link>
 
+      {/* Error Display */}
       {error && <FallbackError error={error.message} />}
 
       {/* Submit button */}
@@ -95,7 +98,7 @@ export default function LoginForm() {
           isPending || (form.formState.isSubmitted && !form.formState.isValid)
         }
       >
-        Login
+        {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Login"}
       </Button>
     </form>
   );

@@ -1,6 +1,6 @@
 import { Brain, BookOpenCheck, RectangleEllipsis } from "lucide-react";
 import AsideFeature from "./aside-feature";
-import ExamAppLogo from "@/shared/components/exam-app-logo";
+import ExamAppLogo from "@/shared/components/global/exam-app-logo";
 
 const features = [
   {
