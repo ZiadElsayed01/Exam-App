@@ -1,6 +1,7 @@
 // API response types
 export interface ISuccessResponse<T> {
   status: true;
+  code: number;
   message: string;
   payload?: T;
 }

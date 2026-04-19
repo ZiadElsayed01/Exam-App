@@ -15,21 +15,3 @@ export interface RegisterResponse {
   user: IUser;
   token: string;
 }
-
-export interface SendEmailVerificationResponse {
-  status: boolean;
-  message: string;
-  code: string;
-}
-
-export interface VerifyEmailResponse {
-  status: boolean;
-  message: string;
-  code: string;
-}
-
-export interface ForgotPasswordResponse {
-  status: boolean;
-  message: string;
-  code: string;
-}

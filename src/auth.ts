@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
 
         const data = await login(result.data);
 
-        if (!data.status) {
+        if (!data.status || !data.payload) {
           throw new Error(data.message);
         }
 

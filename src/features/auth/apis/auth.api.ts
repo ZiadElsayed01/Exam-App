@@ -5,9 +5,6 @@ import {
   LoginResponse,
   LoginCredentials,
   RegisterResponse,
-  SendEmailVerificationResponse,
-  VerifyEmailResponse,
-  ForgotPasswordResponse,
 } from "../types/auth";
 import { HEADERS } from "@/shared/constants/api-headers.constants";
 import {
@@ -15,6 +12,7 @@ import {
   OtpFormData,
   RegisterFormData,
 } from "../schemas/register.schema";
+import { ResetPasswordFormData } from "../schemas/reset-password.schema";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -41,8 +39,7 @@ export const sendEmailVerification = async (values: EmailFormData) => {
     },
   });
 
-  const data: ApiResponse<SendEmailVerificationResponse> =
-    await response.json();
+  const data: ApiResponse<undefined> = await response.json();
 
   return data;
 };
@@ -59,7 +56,7 @@ export const verifyEmail = async (values: OtpFormData) => {
     },
   );
 
-  const data: ApiResponse<VerifyEmailResponse> = await response.json();
+  const data: ApiResponse<undefined> = await response.json();
 
   return data;
 };
@@ -87,7 +84,21 @@ export const forgotPassword = async (values: EmailFormData) => {
     },
   });
 
-  const data: ForgotPasswordResponse = await response.json();
+  const data: ApiResponse<undefined> = await response.json();
+
+  return data;
+};
+
+export const resetPassword = async (values: ResetPasswordFormData) => {
+  const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+    method: "POST",
+    body: JSON.stringify(values),
+    headers: {
+      ...HEADERS.JSON,
+    },
+  });
+
+  const data: ApiResponse<undefined> = await response.json();
 
   return data;
 };

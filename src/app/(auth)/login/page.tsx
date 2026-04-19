@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <main className="flex flex-col gap-10 w-113">
+    <div className="flex flex-col gap-10 w-113">
       {/* Title */}
       <h1 className="font-inter text-2xl font-bold text-gray-800">Login</h1>
 
@@ -18,6 +18,6 @@ export default function LoginPage() {
           Create yours
         </Link>
       </p>
-    </main>
+    </div>
   );
 }

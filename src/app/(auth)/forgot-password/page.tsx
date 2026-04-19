@@ -2,9 +2,9 @@ import ForgotPasswordSteps from "@/features/auth/components/forgot-password/forg
 
 export default function ForgotPasswordPage() {
   return (
-    <main className="flex flex-col w-113">
+    <div className="flex flex-col w-113">
       {/* Steps Container */}
       <ForgotPasswordSteps />
-    </main>
+    </div>
   );
 }

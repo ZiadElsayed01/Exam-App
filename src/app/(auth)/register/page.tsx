@@ -57,7 +57,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="flex flex-col w-113">
+    <div className="flex flex-col w-113">
       {/* Progress Indicator */}
       <div className={`${step === "email" ? "hidden" : ""}`}>
         <ProgressIndicator
@@ -73,6 +73,6 @@ export default function RegisterPage() {
 
       {/* Form Content */}
       {renderStep()}
-    </main>
+    </div>
   );
 }

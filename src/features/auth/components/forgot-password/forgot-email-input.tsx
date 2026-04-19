@@ -56,9 +56,15 @@ export default function ForgotEmailInput({
 
   return (
     <>
+      <h1 className="font-inter text-2xl font-bold text-gray-800 mb-2.5">
+        Forgot Password
+      </h1>
+      <p className=" text-gray-500">
+        Don’t worry, we will help you recover your account.
+      </p>
       {/* Email Input */}
       <form
-        className="flex flex-col font-geist-mono"
+        className="flex flex-col font-geist-mono mt-10"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FieldGroup>
