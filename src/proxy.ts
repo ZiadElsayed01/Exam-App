@@ -1,37 +1,30 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-export default async function proxy(req: NextRequest) {
-  // const token = await getToken({
-  //   req,
-  //   secret: process.env.NEXTAUTH_SECRET,
-  // });
+const publicRoutes = [
+  "/login",
+  "/register",
+  "/reset-password",
+  "/forgot-password",
+];
 
-  // const { pathname } = req.nextUrl;
+export default async function middleware(request: NextRequest) {
+  const token = await getToken({ req: request });
+  const { pathname } = request.nextUrl;
 
-  // Define public routes that don't require authentication
-  // const publicRoutes = [
-  //   "/login",
-  //   "/register",
-  //   "/forgot-password",
-  //   "/reset-password",
-  //   "/verify-email",
-  //   "/api/auth",
-  // ];
+  // If user is not authenticated and trying to access protected routes
+  if (!token && !publicRoutes.some((route) => pathname.startsWith(route))) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // If user is authenticated and trying to access public routes
+  if (token && publicRoutes.some((route) => pathname.startsWith(route))) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    "/((?!_next/static|_next/image|favicon.ico|public).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|public|api).*)"],
 };

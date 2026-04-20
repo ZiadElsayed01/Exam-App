@@ -11,5 +11,6 @@ export interface IUser {
   lastName: string;
   emailVerified: boolean;
   phoneVerified: boolean;
+  profilePhoto?: string;
   role: UserRoles;
 }

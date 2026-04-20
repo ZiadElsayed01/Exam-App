@@ -1,8 +1,8 @@
+import Providers from "@/shared/context/global/providers";
+import { cn } from "@/shared/lib/utils/utils";
 import type { Metadata } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/shared/lib/utils/utils";
-import Providers from "@/shared/context/global/providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -32,7 +32,9 @@ export default function RootLayout({
       )}
     >
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
