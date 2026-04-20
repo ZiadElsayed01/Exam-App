@@ -9,7 +9,9 @@ declare module "next-auth" {
     token: string;
   }
 
-  type Session = IUser;
+  interface Session {
+    user: IUser;
+  }
 }
 
 declare module "next-auth/jwt" {

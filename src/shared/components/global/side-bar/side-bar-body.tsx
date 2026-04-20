@@ -1,14 +1,12 @@
 "use client";
 import { USER_ROLES } from "@/features/auth/constants/user.constants";
 import { BookOpenCheck, GraduationCap, Logs, UserRound } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ElevateLogo from "../../../../public/ElevateLogo.png";
-import WhiteElevateLogo from "../../../../public/WhiteElevateLogo.png";
-import ExamAppLogo from "./exam-app-logo";
-import SideBarFooter from "./side-bar-footer";
+import ElevateLogo from "../../../../../public/ElevateLogo.png";
+import WhiteElevateLogo from "../../../../../public/WhiteElevateLogo.png";
+import ExamAppLogo from "../exam-app-logo";
 
 const userLinks = [
   {
@@ -52,39 +50,41 @@ const adminLinks = [
   },
 ];
 
-export default function SideBar() {
+interface SideBarBodyProps {
+  isAdminSuper: boolean;
+}
+
+export default function SideBarBody({ isAdminSuper }: SideBarBodyProps) {
   const pathname = usePathname();
-  const { data: user } = useSession();
-
-  const isAdmin = user?.role === USER_ROLES.ADMIN;
-
   return (
-    <div
-      className={`p-10 flex flex-col bg-blue-50 h-screen ${isAdmin ? "bg-gray-800" : ""}`}
-    >
+    <div className="w-70.5">
       {/* Elevate Logo */}
       <div className="mb-2.5">
         <Image
-          src={isAdmin ? WhiteElevateLogo : ElevateLogo}
+          src={isAdminSuper ? WhiteElevateLogo : ElevateLogo}
           alt="Elevate Logo"
           className="w-48 h-9"
+          style={{ width: "auto" }}
+          loading="eager"
         />
       </div>
       {/* Exam App Logo */}
-      <ExamAppLogo role={isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER} />
+      <ExamAppLogo
+        role={isAdminSuper ? USER_ROLES.ADMIN_SUPER : USER_ROLES.USER}
+      />
       {/* Navigation Links */}
       <div className="mt-15">
         <ul>
-          {(isAdmin ? adminLinks : userLinks).map((link) => (
+          {(isAdminSuper ? adminLinks : userLinks).map((link) => (
             <li key={link.id}>
               <Link
                 href={link.href}
-                className={`flex items-center gap-2.5 p-4 mb-2.5 ${isAdmin ? "text-white" : "text-gray-500"} ${
+                className={`flex items-center gap-2.5 p-4 mb-2.5 ${isAdminSuper ? "text-white" : "text-gray-500"} ${
                   pathname === link.href &&
-                  (!isAdmin
+                  (!isAdminSuper
                     ? "text-primary bg-blue-100 border border-blue-600 "
                     : "text-white") +
-                    (isAdmin
+                    (isAdminSuper
                       ? "text-white bg-gray-700 border border-gray-400"
                       : "text-gray-500")
                 }`}
@@ -95,10 +95,6 @@ export default function SideBar() {
             </li>
           ))}
         </ul>
-      </div>
-      {/* User Info */}
-      <div className="mt-auto">
-        <SideBarFooter />
       </div>
     </div>
   );
