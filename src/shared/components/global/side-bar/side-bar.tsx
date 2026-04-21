@@ -13,7 +13,7 @@ export default async function SideBar() {
   return (
     <>
       <div
-        className={`p-10 flex flex-col bg-blue-50 h-screen ${isAdminSuper ? "bg-gray-800" : ""}`}
+        className={`p-10 relative left-0 top-0 flex flex-col bg-blue-50 h-full ${isAdminSuper ? "bg-gray-800" : ""}`}
       >
         {/* SideBar Body */}
         <SideBarBody isAdminSuper={isAdminSuper} />

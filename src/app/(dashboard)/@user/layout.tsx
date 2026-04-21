@@ -1,25 +1,16 @@
+import BreadCrumb from "@/shared/components/global/bread-crumb";
+
 export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="user-layout">
-      <nav className="user-nav">
-        {/* User navigation */}
-        <ul>
-          <li>
-            <a href="/dashboard/user">Dashboard</a>
-          </li>
-          <li>
-            <a href="/dashboard/user/profile">Profile</a>
-          </li>
-          <li>
-            <a href="/dashboard/user/exams">My Exams</a>
-          </li>
-        </ul>
-      </nav>
-      <main className="user-main">{children}</main>
+    <div className="flex flex-col">
+      <section>
+        <BreadCrumb />
+      </section>
+      <section className="p-6 bg-gray-50 min-h-screen">{children}</section>
     </div>
   );
 }
