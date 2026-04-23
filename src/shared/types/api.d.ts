@@ -12,4 +12,19 @@ export interface IErrorResponse {
   code: number;
 }
 
-export type ApiResponse<T> = ISuccessResponse<T> | IErrorResponse;
+export type IApiResponse<T> = ISuccessResponse<T> | IErrorResponse;
+
+export interface IPaginatedResponse<T> {
+  metadata: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  data: T[];
+}
+
+export interface IDocumentsFields {
+  createdAt: string;
+  updatedAt: string;
+}

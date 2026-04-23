@@ -42,7 +42,6 @@ export default function UserInfo({
   });
 
   const handleSubmit = (data: UserInfoFormData) => {
-    console.log("User info data:", data);
     setFormData(data);
     setStep("password");
   };

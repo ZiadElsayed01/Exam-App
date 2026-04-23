@@ -1,6 +1,6 @@
 "use server";
 
-import { ApiResponse } from "@/shared/types/api";
+import { IApiResponse } from "@/shared/types/api";
 import {
   LoginResponse,
   LoginCredentials,
@@ -25,7 +25,7 @@ export const login = async (credentials: LoginCredentials) => {
     },
   });
 
-  const data: ApiResponse<LoginResponse> = await response.json();
+  const data: IApiResponse<LoginResponse> = await response.json();
 
   return data;
 };
@@ -39,7 +39,7 @@ export const sendEmailVerification = async (values: EmailFormData) => {
     },
   });
 
-  const data: ApiResponse<undefined> = await response.json();
+  const data: IApiResponse<undefined> = await response.json();
 
   return data;
 };
@@ -56,7 +56,7 @@ export const verifyEmail = async (values: OtpFormData) => {
     },
   );
 
-  const data: ApiResponse<undefined> = await response.json();
+  const data: IApiResponse<undefined> = await response.json();
 
   return data;
 };
@@ -70,7 +70,7 @@ export const register = async (values: RegisterFormData) => {
     },
   });
 
-  const data: ApiResponse<RegisterResponse> = await response.json();
+  const data: IApiResponse<RegisterResponse> = await response.json();
 
   return data;
 };
@@ -84,7 +84,7 @@ export const forgotPassword = async (values: EmailFormData) => {
     },
   });
 
-  const data: ApiResponse<undefined> = await response.json();
+  const data: IApiResponse<undefined> = await response.json();
 
   return data;
 };
@@ -98,7 +98,7 @@ export const resetPassword = async (values: ResetPasswordFormData) => {
     },
   });
 
-  const data: ApiResponse<undefined> = await response.json();
+  const data: IApiResponse<undefined> = await response.json();
 
   return data;
 };

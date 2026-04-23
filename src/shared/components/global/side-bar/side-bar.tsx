@@ -12,8 +12,8 @@ export default async function SideBar() {
 
   return (
     <>
-      <div
-        className={`p-10 relative left-0 top-0 flex flex-col bg-blue-50 h-full ${isAdminSuper ? "bg-gray-800" : ""}`}
+      <aside
+        className={`fixed left-0 top-0 p-10 flex flex-col bg-blue-50 h-screen w-[362px] z-50 ${isAdminSuper ? "bg-gray-800" : ""}`}
       >
         {/* SideBar Body */}
         <SideBarBody isAdminSuper={isAdminSuper} />
@@ -22,7 +22,7 @@ export default async function SideBar() {
         <div className="mt-auto w-70.5">
           <SideBarFooter isAdminSuper={isAdminSuper} />
         </div>
-      </div>
+      </aside>
     </>
   );
 }

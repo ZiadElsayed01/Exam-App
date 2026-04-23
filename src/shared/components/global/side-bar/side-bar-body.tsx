@@ -18,7 +18,7 @@ const userLinks = [
   {
     id: 2,
     name: "Account settings",
-    href: "/account-settings",
+    href: "/account",
     icon: <UserRound className="w-6 h-6" />,
   },
 ];
@@ -39,7 +39,7 @@ const adminLinks = [
   {
     id: 3,
     name: "Account settings",
-    href: "/account-settings",
+    href: "/account",
     icon: <UserRound className="w-6 h-6" />,
   },
   {
@@ -73,7 +73,7 @@ export default function SideBarBody({ isAdminSuper }: SideBarBodyProps) {
         role={isAdminSuper ? USER_ROLES.ADMIN_SUPER : USER_ROLES.USER}
       />
       {/* Navigation Links */}
-      <div className="mt-15">
+      <nav className="mt-15">
         <ul>
           {(isAdminSuper ? adminLinks : userLinks).map((link) => (
             <li key={link.id}>
@@ -95,7 +95,7 @@ export default function SideBarBody({ isAdminSuper }: SideBarBodyProps) {
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
     </div>
   );
 }
