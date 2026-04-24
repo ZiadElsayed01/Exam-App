@@ -1,12 +1,16 @@
 import { USER_ROLES } from "@/features/auth/constants/user.constants";
-import { getProfile } from "@/features/profile/apis/profile.api";
+import { getProfile } from "@/features/user-settings/apis/profile.api";
 import Image from "next/image";
 import SideBarDropmenu from "./side-bar-dropmenu";
 
-export default async function SideBarFooter({ isAdminSuper }: { isAdminSuper: boolean }) {
-  const { payload } = await getProfile();
+export default async function SideBarFooter({
+  isAdminSuper,
+}: {
+  isAdminSuper: boolean;
+}) {
+  const user = await getProfile();
 
-  const user = payload.user;
+  if (!user) return null;
 
   return (
     <div className="flex items-center gap-2">
@@ -18,7 +22,7 @@ export default async function SideBarFooter({ isAdminSuper }: { isAdminSuper: bo
         ) : (
           <div className="w-10 h-10 bg-gray-300 flex items-center justify-center">
             <span className="text-gray-600 font-medium">
-              {user.firstName?.charAt(0)?.toUpperCase() || "U"}
+              {user.firstName?.charAt(0)?.toUpperCase()}
             </span>
           </div>
         )}

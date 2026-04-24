@@ -1,15 +1,8 @@
-import Header from "@/shared/components/global/header";
-import { UserRound } from "lucide-react";
+import { getProfile } from "@/features/user-settings/apis/profile.api";
+import UpdateProfile from "@/features/user-settings/components/update-profile-form";
 
-export default function AccountSettingsPage() {
-  return (
-    <div>
-      <Header
-        icon={<UserRound width={45} height={45} />}
-        title="Account Settings"
-        isBack
-      />
-      AccountSettingsPage
-    </div>
-  );
+export default function ProfilePage() {
+  const profilePromise = getProfile();
+
+  return <UpdateProfile profilePromise={profilePromise} />;
 }

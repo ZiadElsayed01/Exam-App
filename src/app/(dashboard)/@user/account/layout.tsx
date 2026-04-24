@@ -1,6 +1,6 @@
 import SettingsSidebar from "@/features/user-settings/components/settings-sidebar";
-import BreadCrumb from "@/shared/components/global/bread-crumb";
-
+import Header from "@/shared/components/global/header";
+import { UserRound } from "lucide-react";
 
 interface AccountSettingsLayoutProps {
   children: React.ReactNode;
@@ -11,9 +11,16 @@ export default function AccountSettingsLayout({
 }: AccountSettingsLayoutProps) {
   return (
     <>
-      <BreadCrumb />
-      <SettingsSidebar />
-      {children}
+      <Header
+        icon={<UserRound width={45} height={45} />}
+        title="Account Settings"
+        isBack
+      />
+
+      <div className="flex gap-6 h-screen">
+        <SettingsSidebar />
+        {children}
+      </div>
     </>
   );
 }

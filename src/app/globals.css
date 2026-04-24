@@ -48,6 +48,7 @@
 
   /* Login Aside */
   --color-login-aside: var(--login-aside);
+  --color-sonner-background: var(--sonner-background);
 }
 
 :root {
@@ -85,6 +86,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   --login-aside: #eff6ff;
+  --sonner-background: #1f2937;
 }
 
 .dark {

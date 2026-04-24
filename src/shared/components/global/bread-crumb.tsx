@@ -28,14 +28,10 @@ export default function BreadCrumb() {
     segments = ["diplomas"];
   }
 
-  if (segments.length > 1) {
-    segments = ["diplomas", ...segments];
-  }
-
   const isSingle = segments.length === 1;
 
   return (
-    <Breadcrumb className="p-4">
+    <Breadcrumb className="p-4 bg-white">
       <BreadcrumbList>
         {segments.map((segment, index) => {
           const isLast = index === segments.length - 1;

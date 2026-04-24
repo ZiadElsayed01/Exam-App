@@ -14,7 +14,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         type={isPassword ? (showPassword ? "text" : "password") : type}
         data-slot="input"
         className={cn(
-          "h-11.5 w-full min-w-0 border-2 border-input bg-transparent px-2.5 pr-10 text-base transition-colors outline-none placeholder:text-gray-400 focus-visible:border-primary",
+          "h-11.5 w-full min-w-0 border-2 border-gray-200 bg-transparent px-2.5 pr-10 text-base transition-colors outline-none placeholder:text-gray-400 focus-visible:border-primary disabled:bg-gray-100 disabled:cursor-not-allowed",
           className,
         )}
         {...props}

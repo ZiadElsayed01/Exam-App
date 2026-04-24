@@ -10,7 +10,7 @@ interface IDiplomaItemProps {
 export default function DiplomaItem({ diploma }: IDiplomaItemProps) {
   return (
     <Link
-      href={`/${diploma.title
+      href={`/diplomas/${diploma.title
         .toLowerCase()
         .replace(/[^a-zA-Z0-9]+/g, "-")}/exams/${diploma.id}`}
     >

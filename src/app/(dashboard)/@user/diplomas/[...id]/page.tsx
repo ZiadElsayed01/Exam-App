@@ -14,20 +14,15 @@ export default async function DiplomaExamsPage({
 
   return (
     <>
-      {/* BreadCrumb */}
-      <BreadCrumb />
-
       {/* Main Content */}
-      <div className="p-6">
-        <Header
-          title={id[0] + " Exams"}
-          icon={<BookOpenCheck width={45} height={45} />}
-          isBack
-        />
+      <Header
+        title={id[0] + " Exams"}
+        icon={<BookOpenCheck width={45} height={45} />}
+        isBack
+      />
 
-        {/* Exam List */}
-        <ExamList diplomaId={id[2]} />
-      </div>
+      {/* Exam List */}
+      <ExamList diplomaId={id[2]} />
     </>
   );
 }

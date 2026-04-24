@@ -1,12 +1,8 @@
 "use client";
-import { USER_ROLES } from "@/features/auth/constants/user.constants";
+
 import { BookOpenCheck, GraduationCap, Logs, UserRound } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ElevateLogo from "../../../../../public/ElevateLogo.png";
-import WhiteElevateLogo from "../../../../../public/WhiteElevateLogo.png";
-import ExamAppLogo from "../exam-app-logo";
 
 const userLinks = [
   {
@@ -56,46 +52,48 @@ interface SideBarBodyProps {
 
 export default function SideBarBody({ isAdminSuper }: SideBarBodyProps) {
   const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    // Home route
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    // Normal nested routes
+    return pathname === href || pathname.startsWith(href + "/");
+  };
+
+  const links = isAdminSuper ? adminLinks : userLinks;
+
   return (
-    <div className="w-70.5">
-      {/* Elevate Logo */}
-      <div className="mb-2.5">
-        <Image
-          src={isAdminSuper ? WhiteElevateLogo : ElevateLogo}
-          alt="Elevate Logo"
-          className="w-48 h-9"
-          style={{ width: "auto" }}
-          loading="eager"
-        />
-      </div>
-      {/* Exam App Logo */}
-      <ExamAppLogo
-        role={isAdminSuper ? USER_ROLES.ADMIN_SUPER : USER_ROLES.USER}
-      />
-      {/* Navigation Links */}
-      <nav className="mt-15">
-        <ul>
-          {(isAdminSuper ? adminLinks : userLinks).map((link) => (
+    <nav className="mt-15">
+      <ul>
+        {links.map((link) => {
+          const active = isActive(link.href);
+
+          return (
             <li key={link.id}>
               <Link
                 href={link.href}
-                className={`flex items-center gap-2.5 p-4 mb-2.5 ${isAdminSuper ? "text-white" : "text-gray-500"} ${
-                  pathname === link.href &&
-                  (!isAdminSuper
-                    ? "text-primary bg-blue-100 border border-blue-600 "
-                    : "text-white") +
-                    (isAdminSuper
-                      ? "text-white bg-gray-700 border border-gray-400"
-                      : "text-gray-500")
-                }`}
+                className={`flex items-center gap-2.5 p-4 mb-2.5 border transition-border 
+                  ${
+                    active
+                      ? isAdminSuper
+                        ? "text-white bg-gray-700 border border-gray-400"
+                        : "text-primary bg-blue-100 border border-blue-600"
+                      : isAdminSuper
+                        ? "text-white"
+                        : "text-gray-500 border border-transparent"
+                  }
+                `}
               >
                 {link.icon}
                 {link.name}
               </Link>
             </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }

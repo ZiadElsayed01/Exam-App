@@ -12,6 +12,7 @@ export default async function DashboardLayout({
 }) {
   const session = await getServerSession(authOptions);
   const isAdmin = session?.user.role === USER_ROLES.ADMIN;
+
   return (
     <main className="pl-[362px]">
       <SideBar />

@@ -31,6 +31,7 @@ export const userInfoSchema = z
       .nonempty("First name is required"),
     lastName: z.string("Invalid last name").nonempty("Last name is required"),
     phone: z.string("Invalid phone number").optional(),
+    profilePhoto: z.string("Invalid profile Phote").optional(),
   })
   .strict();
 
