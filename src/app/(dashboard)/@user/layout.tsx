@@ -1,10 +1,17 @@
 import BreadCrumb from "@/shared/components/global/bread-crumb";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
+import { USER_ROLES } from "@/features/auth/constants/user.constants";
 
-export default function UserLayout({
+export default async function UserLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  const isAdmin = session?.user.role === USER_ROLES.ADMIN;
+  if (isAdmin) return null;
+
   return (
     <section>
       <BreadCrumb />

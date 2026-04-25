@@ -7,4 +7,24 @@ export const userUpdateInfoSchema = z.object({
   profilePhoto: z.string("Invalid profile Photo").optional(),
 });
 
+export const updatePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string("Invalid current password")
+      .nonempty("Current password is required"),
+    newPassword: z
+      .string("Invalid new password")
+      .nonempty("New password is required"),
+    confirmPassword: z
+      .string("Invalid confirm password")
+      .nonempty("Confirm password is required"),
+  })
+  .strict()
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "New password and confirm password don't match",
+    path: ["confirmPassword"],
+  });
+
 export type UserUpdateInfoFormData = z.infer<typeof userUpdateInfoSchema>;
+
+export type UpdatePasswordFormData = z.infer<typeof updatePasswordSchema>;

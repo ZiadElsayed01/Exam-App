@@ -1,5 +1,5 @@
-import React from "react";
+import UpdatePasswordForm from "@/features/user-settings/components/update-password-form";
 
 export default function ChangePasswordPage() {
-  return <div>ChangePasswordPage</div>;
+  return <UpdatePasswordForm />;
 }

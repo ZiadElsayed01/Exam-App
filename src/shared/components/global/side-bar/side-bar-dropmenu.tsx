@@ -15,7 +15,7 @@ export default function SideBarDropmenu({
   const dropDownItems = [
     {
       label: "Account",
-      href: "/account-settings",
+      href: "/account",
       icon: <UserRound className="w-4.5 h-4.5 text-gray-500" />,
       show: true,
     },

@@ -43,7 +43,7 @@ export default function UpdateProfile({ profilePromise }: UpdateProfileProps) {
     };
     updateProfile(updatedValues, {
       onSuccess: () => {
-        toast.success("Profile updated Successfully");
+        toast.success("Profile Updated Successfully");
       },
     });
   };
