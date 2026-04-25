@@ -5,6 +5,7 @@ import { Controller, UseFormReturn } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../../ui/field";
 import { Input } from "../../ui/input";
 import { PhoneInput } from "../../ui/phone-input";
+import ChangeEmailDialog from "@/features/user-settings/components/change-email-dialog";
 
 interface UserInfoFormProps {
   form: UseFormReturn<UserInfoFormData>;
@@ -117,10 +118,24 @@ export default function UserInfoForm({ form, mode }: UserInfoFormProps) {
                   <FieldLabel htmlFor="email">Email</FieldLabel>
 
                   {mode === "update" && (
-                    <div className="flex gap-1.5 items-center text-primary cursor-pointer">
-                      <PencilLine className="w-4 h-4" />
-                      Change
-                    </div>
+                    <ChangeEmailDialog
+                      trigger={
+                        <button
+                          type="button"
+                          className="flex gap-1.5 items-center text-primary cursor-pointer"
+                        >
+                          <PencilLine className="w-4 h-4" />
+                          Change
+                        </button>
+                      }
+                      onEmailVerified={(newEmail) => {
+                        form.setValue("email", newEmail, {
+                          shouldDirty: true,
+                          shouldTouch: true,
+                          shouldValidate: true,
+                        });
+                      }}
+                    />
                   )}
                 </div>
                 <Input

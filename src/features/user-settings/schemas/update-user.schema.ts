@@ -25,6 +25,21 @@ export const updatePasswordSchema = z
     path: ["confirmPassword"],
   });
 
-export type UserUpdateInfoFormData = z.infer<typeof userUpdateInfoSchema>;
+export const changeEmailSchema = z.object({
+  newEmail: z
+    .string()
+    .email("Invalid email format")
+    .nonempty("Email is required"),
+});
 
+export const confirmEmailSchema = z.object({
+  code: z
+    .string()
+    .length(6, "OTP must be 6 digits")
+    .regex(/^\d+$/, "OTP must contain only digits"),
+});
+
+export type UserUpdateInfoFormData = z.infer<typeof userUpdateInfoSchema>;
 export type UpdatePasswordFormData = z.infer<typeof updatePasswordSchema>;
+export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>;
+export type ConfirmEmailFormData = z.infer<typeof confirmEmailSchema>;

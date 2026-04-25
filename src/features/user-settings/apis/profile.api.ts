@@ -4,6 +4,8 @@ import { getNextAuthToken } from "@/shared/lib/utils/auth.utils";
 import { IApiResponse } from "@/shared/types/api";
 import { HEADERS } from "@/shared/constants/api-headers.constants";
 import {
+  ChangeEmailFormData,
+  ConfirmEmailFormData,
   UpdatePasswordFormData,
   UserUpdateInfoFormData,
 } from "../schemas/update-user.schema";
@@ -84,6 +86,48 @@ export const updatePasswordAction = async (
   const token = jwt?.token;
 
   const response = await fetch(`${API_BASE_URL}/users/change-password`, {
+    method: "POST",
+    headers: {
+      ...HEADERS.JSON,
+      ...HEADERS.AUTH(token!),
+    },
+    body: JSON.stringify(values),
+  });
+
+  const data: IApiResponse<undefined> = await response.json();
+  if (!data.status) {
+    return data;
+  }
+
+  return data;
+};
+
+export const requestEmailChange = async (values: ChangeEmailFormData) => {
+  const jwt = await getNextAuthToken();
+  const token = jwt?.token;
+
+  const response = await fetch(`${API_BASE_URL}/users/email/request`, {
+    method: "POST",
+    headers: {
+      ...HEADERS.JSON,
+      ...HEADERS.AUTH(token!),
+    },
+    body: JSON.stringify(values),
+  });
+
+  const data: IApiResponse<undefined> = await response.json();
+  if (!data.status) {
+    return data;
+  }
+
+  return data;
+};
+
+export const confirmEmailChange = async (values: ConfirmEmailFormData) => {
+  const jwt = await getNextAuthToken();
+  const token = jwt?.token;
+
+  const response = await fetch(`${API_BASE_URL}/users/email/confirm`, {
     method: "POST",
     headers: {
       ...HEADERS.JSON,
