@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { confirmEmailChange } from "../apis/profile.api";
-import { ConfirmEmailFormData } from "../schemas/update-user.schema";
+import { confirmEmailChange } from "../apis/account.api";
+import { ConfirmEmailFormData } from "../schemas/update-account.schema";
 
 export default function useConfirmNewEmail() {
   return useMutation({

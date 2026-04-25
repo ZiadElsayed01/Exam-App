@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import { Loader2, TriangleAlert } from "lucide-react";
-import { deleteProfileAction } from "../apis/profile.api";
+import { deleteProfileAction } from "../apis/account.api";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import React from "react";

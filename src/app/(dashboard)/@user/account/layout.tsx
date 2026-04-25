@@ -1,4 +1,4 @@
-import SettingsSidebar from "@/features/user-settings/components/settings-sidebar";
+import SettingsSidebar from "@/features/account/components/settings-sidebar";
 import Header from "@/shared/components/global/header";
 import { UserRound } from "lucide-react";
 

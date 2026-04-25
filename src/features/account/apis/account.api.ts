@@ -8,11 +8,11 @@ import {
   ConfirmEmailFormData,
   UpdatePasswordFormData,
   UserUpdateInfoFormData,
-} from "../schemas/update-user.schema";
+} from "../schemas/update-account.schema";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export const getProfile = async (): Promise<IUser | null> => {
+export const getProfileAction = async (): Promise<IUser | null> => {
   const jwt = await getNextAuthToken();
   const token = jwt?.token;
 

@@ -1,4 +1,4 @@
-import UpdatePasswordForm from "@/features/user-settings/components/update-password-form";
+import UpdatePasswordForm from "@/features/account/components/update-password-form";
 
 export default function ChangePasswordPage() {
   return <UpdatePasswordForm />;

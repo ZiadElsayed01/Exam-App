@@ -1,8 +1,8 @@
-import { getProfile } from "@/features/user-settings/apis/profile.api";
-import UpdateProfile from "@/features/user-settings/components/update-profile-form";
+import { getProfileAction } from "@/features/account/apis/account.api";
+import UpdateProfile from "@/features/account/components/update-profile-form";
 
 export default function ProfilePage() {
-  const profilePromise = getProfile();
+  const profilePromise = getProfileAction();
 
   return <UpdateProfile profilePromise={profilePromise} />;
 }

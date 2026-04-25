@@ -1,10 +1,10 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { deleteProfileAction, updateProfileAction } from "../apis/profile.api";
-import { UserUpdateInfoFormData } from "../schemas/update-user.schema";
+import { deleteProfileAction, updateProfileAction } from "../apis/account.api";
+import { UserUpdateInfoFormData } from "../schemas/update-account.schema";
 
-export default function useProfile() {
+export default function useAccount() {
   const updateProfileMutation = useMutation({
     mutationKey: ["update-profile"],
     mutationFn: async (values: UserUpdateInfoFormData) => {
@@ -22,7 +22,7 @@ export default function useProfile() {
     mutationKey: ["delete-profile"],
     mutationFn: async () => {
       const response = await deleteProfileAction();
-      
+
       if (!response?.status) {
         throw new Error(response.message);
       }

@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { OtpFormData, otpSchema } from "../../schemas/register.schema";
 import { Controller, useForm } from "react-hook-form";
 import useVerifyOtp from "../../hooks/register/use-verify-otp";
-import useConfirmNewEmail from "@/features/user-settings/hooks/use-confirm-new-email";
+import useConfirmNewEmail from "@/features/account/hooks/use-confirm-new-email";
 import { toast } from "sonner";
 
 interface OtpVerificationProps {

@@ -1,5 +1,5 @@
 import { USER_ROLES } from "@/features/auth/constants/user.constants";
-import { getProfile } from "@/features/user-settings/apis/profile.api";
+import { getProfileAction } from "@/features/account/apis/account.api";
 import Image from "next/image";
 import SideBarDropmenu from "./side-bar-dropmenu";
 
@@ -8,7 +8,7 @@ export default async function SideBarFooter({
 }: {
   isAdminSuper: boolean;
 }) {
-  const user = await getProfile();
+  const user = await getProfileAction();
 
   if (!user) return null;
 

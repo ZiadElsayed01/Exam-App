@@ -5,15 +5,15 @@ import {
 } from "@/features/auth/schemas/register.schema";
 import { IUser } from "@/features/auth/types/user";
 import FallbackError from "@/shared/components/global/fallback-error";
-import UserInfoForm from "@/shared/components/global/forms/user-info-form";
+import UserInfoForm from "@/features/account/components/user-info-form";
 import { Button } from "@/shared/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { use } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import useProfile from "../hooks/use-profile";
-import { UserUpdateInfoFormData } from "../schemas/update-user.schema";
+import useAccount from "../hooks/use-account";
+import { UserUpdateInfoFormData } from "../schemas/update-account.schema";
 import DeleteAccountDialog from "./delete-account-dialog";
 
 interface UpdateProfileProps {
@@ -22,7 +22,7 @@ interface UpdateProfileProps {
 
 export default function UpdateProfile({ profilePromise }: UpdateProfileProps) {
   const user = use(profilePromise);
-  const { updateProfile, isUpdating, updateError } = useProfile();
+  const { updateProfile, isUpdating, updateError } = useAccount();
 
   const form = useForm<UserInfoFormData>({
     resolver: zodResolver(userInfoSchema),

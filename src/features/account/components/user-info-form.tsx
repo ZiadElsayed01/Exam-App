@@ -2,10 +2,15 @@
 import { UserInfoFormData } from "@/features/auth/schemas/register.schema";
 import { PencilLine } from "lucide-react";
 import { Controller, UseFormReturn } from "react-hook-form";
-import { Field, FieldError, FieldGroup, FieldLabel } from "../../ui/field";
-import { Input } from "../../ui/input";
-import { PhoneInput } from "../../ui/phone-input";
-import ChangeEmailDialog from "@/features/user-settings/components/change-email-dialog";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "../../../shared/components/ui/field";
+import { Input } from "../../../shared/components/ui/input";
+import { PhoneInput } from "../../../shared/components/ui/phone-input";
+import ChangeEmailDialog from "@/features/account/components/change-email-dialog";
 
 interface UserInfoFormProps {
   form: UseFormReturn<UserInfoFormData>;

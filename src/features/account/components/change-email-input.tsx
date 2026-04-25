@@ -15,7 +15,7 @@ import useUpdateEmail from "../hooks/use-update-email";
 import {
   ChangeEmailFormData,
   changeEmailSchema,
-} from "../schemas/update-user.schema";
+} from "../schemas/update-account.schema";
 
 interface ChangeEmailInputProp {
   setStep: (step: string) => void;

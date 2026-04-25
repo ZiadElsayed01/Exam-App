@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { UpdatePasswordFormData } from "../schemas/update-user.schema";
-import { updatePasswordAction } from "../apis/profile.api";
+import { UpdatePasswordFormData } from "../schemas/update-account.schema";
+import { updatePasswordAction } from "../apis/account.api";
 
 export default function useUpdatePassword() {
   return useMutation({

@@ -1,5 +1,5 @@
 "use client";
-import UserInfoForm from "@/shared/components/global/forms/user-info-form";
+import UserInfoForm from "@/features/account/components/user-info-form";
 import { Button } from "@/shared/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronRight } from "lucide-react";

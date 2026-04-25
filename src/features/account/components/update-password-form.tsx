@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   updatePasswordSchema,
   UpdatePasswordFormData,
-} from "../schemas/update-user.schema";
+} from "../schemas/update-account.schema";
 import FallbackError from "@/shared/components/global/fallback-error";
 import { Button } from "@/shared/components/ui/button";
 import { Loader2 } from "lucide-react";
