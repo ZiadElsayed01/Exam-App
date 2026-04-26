@@ -1,3 +1,4 @@
+"use server";
 import { IApiResponse, IErrorResponse } from "@/shared/types/api";
 import { IPaginatedResponse } from "@/shared/types/api";
 import {
@@ -7,6 +8,7 @@ import {
 import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { IExam } from "../types/exams";
+import { getNextAuthToken } from "@/shared/lib/utils/auth.utils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -39,4 +41,27 @@ export async function getExams(req: NextRequest) {
     await response.json();
 
   return payload;
+}
+
+export async function getExamByIdAction(examId: string) {
+  const jwt = await getNextAuthToken();
+  const token = jwt?.token;
+
+  if (!token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
+  const response = await fetch(`${API_URL}/exams/${examId}`, {
+    headers: {
+      ...HEADERS.AUTH(token),
+    },
+  });
+
+  const payload: IApiResponse<{ exam: IExam }> = await response.json();
+
+  return payload.payload;
 }

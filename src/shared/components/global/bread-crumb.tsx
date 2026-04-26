@@ -1,12 +1,8 @@
 "use client";
-
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
   BreadcrumbPage,
@@ -35,7 +31,6 @@ export default function BreadCrumb() {
       <BreadcrumbList>
         {segments.map((segment, index) => {
           const isLast = index === segments.length - 1;
-          const href = "/" + segments.slice(0, index + 1).join("/");
 
           return (
             <div key={index} className="flex items-center">
@@ -51,16 +46,9 @@ export default function BreadCrumb() {
                     {segment.replace(/-/g, " ")}
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink
-                    render={(props) => (
-                      <Link {...props} href={href}>
-                        {props.children}
-                      </Link>
-                    )}
-                    className="text-gray-400 capitalize ml-2"
-                  >
+                  <p className="text-gray-400 capitalize ml-2">
                     {segment.replace(/-/g, " ")}
-                  </BreadcrumbLink>
+                  </p>
                 )}
               </BreadcrumbItem>
             </div>

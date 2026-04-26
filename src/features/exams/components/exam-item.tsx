@@ -54,7 +54,11 @@ export default function ExamItem({ exam }: ExamItemProps) {
 
       {/* Start Button */}
       <Link
-        href={`/exams/${exam.id}`}
+        href={`/diplomas/${exam.diploma.title
+          .toLowerCase()
+          .replace(/[^a-zA-Z0-9]+/g, "-")}/${exam.title
+          .toLowerCase()
+          .replace(/[^a-zA-Z0-9]+/g, "-")}/${exam.id}`}
         className="absolute right-2.5 bottom-2.5 flex items-center gap-2 z-50"
       >
         <Button className="bg-primary text-white px-4 py-1.5">
