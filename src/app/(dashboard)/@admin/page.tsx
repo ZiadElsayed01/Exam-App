@@ -1,15 +1,9 @@
-export default function AdminDashboard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import DiplomasPage from "./diplomas/page";
+
+export default function AdminDashboardHome() {
   return (
-    <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
-      <div className="admin-content">
-        <p>Welcome to the Admin Dashboard</p>
-        {children}
-      </div>
-    </div>
+    <>
+      <DiplomasPage />
+    </>
   );
 }

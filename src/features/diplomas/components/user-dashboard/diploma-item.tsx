@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { IDiploma } from "../types/diploma";
+import { IDiploma } from "../../types/diploma";
 import { cn } from "@/shared/lib/utils/utils";
 import Link from "next/link";
 

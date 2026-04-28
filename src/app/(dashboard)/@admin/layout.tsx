@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import { USER_ROLES } from "@/features/auth/constants/user.constants";
+import BreadCrumb from "@/shared/components/global/bread-crumb";
 
 export default async function AdminLayout({
   children,
@@ -12,18 +13,9 @@ export default async function AdminLayout({
   if (!isAdmin) return null;
 
   return (
-    <div className="admin-layout">
-      <nav className="admin-nav">
-        {/* Admin navigation */}
-        <ul>
-          <li><a href="/dashboard/admin">Dashboard</a></li>
-          <li><a href="/dashboard/admin/users">Users</a></li>
-          <li><a href="/dashboard/admin/settings">Settings</a></li>
-        </ul>
-      </nav>
-      <main className="admin-main">
-        {children}
-      </main>
-    </div>
+    <>
+      <BreadCrumb />
+      <main className="bg-gray-100">{children}</main>
+    </>
   );
 }

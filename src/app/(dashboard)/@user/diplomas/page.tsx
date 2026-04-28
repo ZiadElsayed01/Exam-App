@@ -1,4 +1,4 @@
-import DiplomaList from "@/features/diplomas/components/diploma-list";
+import DiplomaList from "@/features/diplomas/components/user-dashboard/diploma-list";
 import Header from "@/shared/components/global/header";
 import { GraduationCap } from "lucide-react";
 

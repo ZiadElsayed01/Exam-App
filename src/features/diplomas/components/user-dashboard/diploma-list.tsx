@@ -5,8 +5,8 @@ import FallbackError from "@/shared/components/global/fallback-error";
 import ScrollToView from "@/shared/components/global/scroll-to-view";
 import { useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useDiplomaList from "../hooks/use-diploma-list";
-import DiplomaListSkeleton from "../skeletons/diploma-list-skeleton";
+import useDiplomaList from "../../hooks/use-diploma";
+import DiplomaListSkeleton from "../../skeletons/diploma-list-skeleton";
 import DiplomaItem from "./diploma-item";
 
 export default function DiplomaList() {
