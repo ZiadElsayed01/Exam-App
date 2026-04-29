@@ -4,7 +4,7 @@ export default function PaginationSkeleton() {
   return (
     <div className="flex items-center gap-4">
       {/* Left side - Item count skeleton */}
-      <div className="h-4 bg-gray-200 animate-pulse w-24"></div>
+      <div className="h-4 bg-gray-200 animate-pulse w-25"></div>
 
       {/* Right - Page navigation skeleton */}
       <div className="flex items-center">

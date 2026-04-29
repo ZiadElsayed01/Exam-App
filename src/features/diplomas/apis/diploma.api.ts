@@ -63,7 +63,7 @@ export async function getDiplomasAction(req: NextRequest) {
 
 export async function getDiplomaByIdAction(diplomaId: string) {
   const token = await getNextAuthToken();
-  console.log(token);
+
   const response = await fetch(`${API_URL}/diplomas/${diplomaId}`, {
     headers: {
       ...HEADERS.AUTH(token!.token),

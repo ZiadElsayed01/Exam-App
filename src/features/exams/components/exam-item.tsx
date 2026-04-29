@@ -4,6 +4,7 @@ import Image from "next/image";
 import { CircleQuestionMark, MoveRight, Timer } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import Link from "next/link";
+import { slugify } from "@/shared/lib/utils/utils";
 
 interface ExamItemProps {
   exam: IExam;
@@ -54,11 +55,7 @@ export default function ExamItem({ exam }: ExamItemProps) {
 
       {/* Start Button */}
       <Link
-        href={`/diplomas/${exam.diploma.title
-          .toLowerCase()
-          .replace(/[^a-zA-Z0-9]+/g, "-")}/${exam.title
-          .toLowerCase()
-          .replace(/[^a-zA-Z0-9]+/g, "-")}/${exam.id}`}
+        href={`/diplomas/${slugify(exam.diploma.title)}/${slugify(exam.title)}/${exam.id}`}
         className="absolute right-2.5 bottom-2.5 flex items-center gap-2 z-50"
       >
         <Button className="bg-primary text-white px-4 py-1.5">

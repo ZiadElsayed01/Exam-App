@@ -1,36 +1,35 @@
 "use client";
 import { Button } from "@/shared/components/ui/button";
+import PaginationSkeleton from "@/shared/skeletons/pagination-skeleton";
 import { IPaginatedResponse } from "@/shared/types/api";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IDiploma } from "../../types/diploma";
-import PaginationSkeleton from "../../skeletons/pagination-skeleton";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-interface DiplomaPaginationProps {
-  diplomas:
-    | IPaginatedResponse<IDiploma>
-    | (IPaginatedResponse<IDiploma> | undefined)[]
+interface PaginationProps<T> {
+  data:
+    | IPaginatedResponse<T>
+    | (IPaginatedResponse<T> | undefined)[]
     | undefined;
   isLoading?: boolean;
   href: string;
   addText: string;
 }
 
-export default function DiplomaPagination({
-  diplomas,
+export default function Pagination<T>({
+  data,
   isLoading = false,
   href,
   addText,
-}: DiplomaPaginationProps) {
+}: PaginationProps<T>) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Handle the case where diplomas is an array (from infinite scroll) or single object
-  const currentPageData = Array.isArray(diplomas)
-    ? diplomas.find((page) => page !== undefined)
-    : diplomas;
+  // Handle the case where data is an array (from infinite scroll) or single object
+  const currentPageData = Array.isArray(data)
+    ? data.find((page) => page !== undefined)
+    : data;
 
   if (!currentPageData && !isLoading) {
     return null;
@@ -68,7 +67,7 @@ export default function DiplomaPagination({
   };
 
   return (
-    <div className="bg-white py-1.5 px-6 flex items-center justify-between border-t">
+    <div className="bg-white py-1.5 px-6 flex items-center justify-between border-t sticky top-0 z-50">
       {/* Left - Page navigation with loading state */}
       {isLoading ? (
         <PaginationSkeleton />
@@ -102,7 +101,7 @@ export default function DiplomaPagination({
         </div>
       )}
 
-      {/* Right side - Add New Diploma button */}
+      {/* Right side - Add New button */}
       <Link
         href={href}
         className="h-10 p-4 text-sm bg-emerald-500 flex items-center justify-center text-white"

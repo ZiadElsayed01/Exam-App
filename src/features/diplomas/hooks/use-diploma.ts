@@ -67,6 +67,8 @@ export default function useDiplomaList() {
       }
       return lastPage.metadata.page + 1;
     },
+    refetchOnWindowFocus: true,
+    staleTime: 0, // Ensure fresh data when navigating back
   });
 }
 
@@ -116,6 +118,8 @@ export function useDiplomaListSingle() {
 
       return data.payload;
     },
+    refetchOnWindowFocus: true,
+    staleTime: 0, // Ensure fresh data when navigating back
   });
 }
 

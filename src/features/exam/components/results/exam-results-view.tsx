@@ -7,6 +7,7 @@ import { IExam } from "@/features/exams/types/exams";
 import ExamHeader from "../exam-header";
 import { FolderSearch, RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { slugify } from "@/shared/lib/utils/utils";
 
 export default function ExamResultsView({
   submission,
@@ -18,9 +19,7 @@ export default function ExamResultsView({
   exam: IExam;
 }) {
   const router = useRouter();
-  const explorePath = `/diplomas/${exam.diploma.title
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9]+/g, "-")}/exams/${exam.diplomaId}`;
+  const explorePath = `/diplomas/${slugify(exam.diploma.title)}/exams/${exam.diplomaId}`;
 
   return (
     <div className="bg-white p-6">

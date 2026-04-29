@@ -7,9 +7,13 @@ import { ISortOption } from "../types";
 
 interface ISortDropdownProps {
   sortOptions: ISortOption[];
+  gray?: boolean;
 }
 
-export function SortDropdown({ sortOptions }: ISortDropdownProps) {
+export function SortDropdown({
+  sortOptions,
+  gray = false,
+}: ISortDropdownProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -28,15 +32,19 @@ export function SortDropdown({ sortOptions }: ISortDropdownProps) {
   return (
     <SimpleDropdown
       trigger={
-        <Button>
-          <p className="flex items-center gap-1.5">
+        <Button className={`${gray && "bg-gray-300 text-sm font-medium"}`}>
+          <p
+            className={`flex items-center gap-1.5 ${gray ? "text-gray-800" : "text-white"}`}
+          >
             Sort
-            <ArrowDownWideNarrow className="w-4.5 h-4.5 text-white" />
+            <ArrowDownWideNarrow
+              className={`w-4.5 h-4.5 ${gray ? "text-gray-800" : "text-white"}`}
+            />
           </p>
         </Button>
       }
       align="end"
-      contentClassName="w-50"
+      contentClassName="w-65"
     >
       {sortOptions.map((option) => (
         <SimpleDropdownItem

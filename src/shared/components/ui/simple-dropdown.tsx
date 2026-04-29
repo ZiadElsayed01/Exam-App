@@ -54,7 +54,7 @@ export function SimpleDropdown({
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full mt-1 max-w-50 overflow-hidden border border-gray-200 bg-white shadow-md z-50",
+            "absolute top-full mt-1  min-w-50 overflow-hidden border border-gray-200 bg-white shadow-md z-50",
             getAlignmentClass(),
             contentClassName,
           )}

@@ -1,9 +1,9 @@
 "use client";
-import DiplomaPagination from "@/features/diplomas/components/admin-dashboard/diploma-pagination";
 import DiplomaTable from "@/features/diplomas/components/admin-dashboard/diploma-table";
 import SearchAndFilter from "@/features/diplomas/components/admin-dashboard/search-and-filter";
 import { useDiplomaListSingle } from "@/features/diplomas/hooks/use-diploma";
 import FallbackError from "@/shared/components/global/fallback-error";
+import Pagination from "@/shared/components/pagination";
 import { useMemo } from "react";
 
 export default function DiplomasPage() {
@@ -24,8 +24,8 @@ export default function DiplomasPage() {
 
   return (
     <>
-      <DiplomaPagination
-        diplomas={diplomaData}
+      <Pagination
+        data={diplomaData}
         isLoading={isLoading}
         href="/add-new-diploma"
         addText="Add New Diploma"

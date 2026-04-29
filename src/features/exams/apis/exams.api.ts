@@ -12,13 +12,23 @@ import { getNextAuthToken } from "@/shared/lib/utils/auth.utils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function getExams(req: NextRequest) {
+export async function getExamsAction(req: NextRequest) {
   const token = await getToken({ req });
   const searchParams = req.nextUrl.searchParams;
 
-  const diplomaId = searchParams.get("diplomaId");
+  const diplomaId = searchParams.get("diplomaId") || "";
   const page = Number(searchParams.get("page") || 1);
   const limit = Number(searchParams.get("limit") || PAGINATION_LIMIT);
+  const sortBy = searchParams.get("sortBy") || "";
+  const sortOrder = searchParams.get("sortOrder") || "";
+  const search = searchParams.get("search") || "";
+  const immutableValue = searchParams.get("immutable");
+  const immutable =
+    immutableValue === "true"
+      ? false // false means immutable
+      : immutableValue === "false"
+        ? true // true means mutable
+        : undefined;
 
   if (!token) {
     return {
@@ -28,14 +38,21 @@ export async function getExams(req: NextRequest) {
     } as IErrorResponse;
   }
 
-  const response = await fetch(
-    `${API_URL}/exams?diplomaId=${diplomaId}&page=${page}&limit=${limit}`,
-    {
-      headers: {
-        ...HEADERS.AUTH(token.token),
-      },
+  const queryParams = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+    ...(sortBy && { sortBy }),
+    ...(sortOrder && { sortOrder }),
+    ...(search && { search }),
+    ...(diplomaId && { diplomaId }),
+    ...(immutable !== undefined && { immutable: immutable.toString() }),
+  });
+
+  const response = await fetch(`${API_URL}/exams?${queryParams.toString()}`, {
+    headers: {
+      ...HEADERS.AUTH(token.token),
     },
-  );
+  });
 
   const payload: IApiResponse<IPaginatedResponse<IExam>> =
     await response.json();
@@ -43,9 +60,8 @@ export async function getExams(req: NextRequest) {
   return payload;
 }
 
-export async function getExamByIdAction(examId: string) {
-  const jwt = await getNextAuthToken();
-  const token = jwt?.token;
+export async function getExamByIdAction(id: string) {
+  const token = await getNextAuthToken();
 
   if (!token) {
     return {
@@ -55,13 +71,36 @@ export async function getExamByIdAction(examId: string) {
     } as IErrorResponse;
   }
 
-  const response = await fetch(`${API_URL}/exams/${examId}`, {
+  const response = await fetch(`${API_URL}/exams/${id}`, {
     headers: {
-      ...HEADERS.AUTH(token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 
   const payload: IApiResponse<{ exam: IExam }> = await response.json();
 
   return payload.payload;
+}
+
+export async function deleteExamAction(id: string) {
+  const token = await getNextAuthToken();
+
+  if (!token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
+  const response = await fetch(`${API_URL}/exams/${id}`, {
+    method: "DELETE",
+    headers: {
+      ...HEADERS.AUTH(token.token),
+    },
+  });
+
+  const payload: IApiResponse<IExam> = await response.json();
+
+  return payload;
 }

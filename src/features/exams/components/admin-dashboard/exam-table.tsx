@@ -1,24 +1,24 @@
 import { SortDropdown } from "@/shared/components/sort-dropdown";
 import Image from "next/image";
 import { memo } from "react";
-import { diplomaSortOptions } from "../../constants/diploma.constants";
+import { examSortOptions } from "../../constants/exam.constants";
 import TableSkeleton from "@/shared/components/table-skeleton";
-import { IDiploma } from "../../types/diploma";
-import DiplomaActionsDropdown from "./diploma-actions-dropdown";
+import { IExam } from "../../types/exams";
+import ExamActionsDropdown from "./exam-actions-dropdown";
 import { slugify } from "@/shared/lib/utils/utils";
 
-interface DiplomaTableProps {
-  diplomas: IDiploma[];
+interface ExamTableProps {
+  exams: IExam[];
   isLoading?: boolean;
 }
 
-function DiplomaTable({ diplomas, isLoading }: DiplomaTableProps) {
+function ExamTable({ exams, isLoading }: ExamTableProps) {
   if (isLoading) {
     return (
       <TableSkeleton
-        columns={4}
+        columns={5}
         showImageColumn={true}
-        showMultiLineColumn={true}
+        showMultiLineColumn={false}
         showActionColumn={true}
       />
     );
@@ -38,36 +38,42 @@ function DiplomaTable({ diplomas, isLoading }: DiplomaTableProps) {
               </th>
               <th
                 scope="col"
-                className="px-2.5 text-left text-sm font-medium text-white w-50"
+                className="px-2.5 text-left text-sm font-medium text-white w-112.25"
               >
                 Title
               </th>
               <th
                 scope="col"
-                className="px-2.5 text-left text-sm font-medium text-white"
+                className="px-2.5 text-left text-sm font-medium text-white w-50"
               >
-                Description
+                Diploma
+              </th>
+              <th
+                scope="col"
+                className="px-2.5 text-left text-sm font-medium text-white w-50"
+              >
+                No. of Questions
               </th>
               <th
                 scope="col"
                 className="px-2.5 text-sm font-medium text-white w-20"
               >
                 {""}
-                <SortDropdown sortOptions={diplomaSortOptions} />
+                <SortDropdown sortOptions={examSortOptions} />
               </th>
             </tr>
           </thead>
 
           <tbody className="bg-white divide-y divide-gray-100">
-            {diplomas.map((diploma) => (
-              <tr key={diploma.id} className="hover:bg-gray-100">
+            {exams.map((exam) => (
+              <tr key={exam.id} className="hover:bg-gray-100">
                 <td className="px-4 py-2.5 whitespace-nowrap">
                   <div className="h-25 w-22.5 p-2.5 relative flex items-center justify-center">
-                    {diploma.image ? (
+                    {exam.image ? (
                       <Image
                         className="h-10 w-10 object-cover"
-                        src={diploma.image}
-                        alt={diploma.title}
+                        src={exam.image}
+                        alt={exam.title}
                         fill
                       />
                     ) : (
@@ -77,23 +83,31 @@ function DiplomaTable({ diplomas, isLoading }: DiplomaTableProps) {
                 </td>
                 <td className="px-4 py-2.5 relative group">
                   <div className="text-sm font-medium text-gray-800 truncate">
-                    {diploma.title}
+                    {exam.title}
                   </div>
                   <p className="absolute bg-gray-800 p-2.5 hidden group-hover:block text-white bottom-20 left-0 z-10">
-                    {diploma.title}{" "}
+                    {exam.title}{" "}
                     <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-gray-800"></span>
                   </p>
                 </td>
                 <td className="px-4 py-2.5">
-                  <div className="text-sm text-gray-500 line-clamp-4">
-                    {diploma.description}
+                  <div className="text-sm text-gray-500 line-clamp-1">
+                    {exam.diploma?.title || "N/A"}
+                  </div>
+                </td>
+                <td className="px-4 py-2.5">
+                  <div className="text-sm text-gray-500">
+                    {exam.questionsCount || 0}
                   </div>
                 </td>
                 <td className="px-4 py-2.5 whitespace-nowrap text-center text-sm font-medium">
-                  <DiplomaActionsDropdown
-                    viewLink={`/diplomas/${slugify(diploma.title)}/${diploma.id}`}
-                    editLink={`/diplomas/edit-diploma/${diploma.id}`}
-                    id={diploma.id}
+                  <ExamActionsDropdown
+                    viewLink={`/exams/${slugify(exam.title)}/${exam.id}`}
+                    editLink={`/exams/edit-exam/${exam.id}`}
+                    id={exam.id}
+                    adding={true}
+                    addLink="/exams/create-exam"
+                    addText="Add Questions"
                   />
                 </td>
               </tr>
@@ -101,9 +115,9 @@ function DiplomaTable({ diplomas, isLoading }: DiplomaTableProps) {
           </tbody>
         </table>
 
-        {diplomas.length === 0 && (
+        {exams.length === 0 && (
           <div className="text-center py-8">
-            <p className="text-gray-800">No diplomas found</p>
+            <p className="text-gray-800">No exams found</p>
           </div>
         )}
       </div>
@@ -111,4 +125,4 @@ function DiplomaTable({ diplomas, isLoading }: DiplomaTableProps) {
   );
 }
 
-export default memo(DiplomaTable);
+export default memo(ExamTable);

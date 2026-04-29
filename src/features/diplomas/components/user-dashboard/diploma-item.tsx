@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { IDiploma } from "../../types/diploma";
-import { cn } from "@/shared/lib/utils/utils";
+import { cn, slugify } from "@/shared/lib/utils/utils";
 import Link from "next/link";
 
 interface IDiplomaItemProps {
@@ -9,11 +9,7 @@ interface IDiplomaItemProps {
 
 export default function DiplomaItem({ diploma }: IDiplomaItemProps) {
   return (
-    <Link
-      href={`/diplomas/${diploma.title
-        .toLowerCase()
-        .replace(/[^a-zA-Z0-9]+/g, "-")}/exams/${diploma.id}`}
-    >
+    <Link href={`/diplomas/${slugify(diploma.title)}/exams/${diploma.id}`}>
       <article
         className={cn(
           "min-h-96 p-2.5 flex flex-col justify-end relative",
