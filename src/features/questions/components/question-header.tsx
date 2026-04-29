@@ -1,37 +1,36 @@
 "use client";
 import SubHeader from "@/shared/components/global/sub-header";
 import { useRouter } from "next/navigation";
-import { useDeleteExam } from "../../hooks/use-exam";
 import { toast } from "sonner";
 
-interface ExamHeaderProps {
+interface QuestionHeaderProps {
   title: string;
   editHref: string;
   id: string;
   subTitle: React.ReactNode;
 }
 
-export default function ExamHeader({
+export default function QuestionHeader({
   title,
   editHref,
   id,
   subTitle,
-}: ExamHeaderProps) {
+}: QuestionHeaderProps) {
   const router = useRouter();
-  const { mutate: deleteExam } = useDeleteExam(id);
+  // const { mutate: deleteExam } = useDeleteExam(id);
 
-  const handleDeleteExam = () => {
-    deleteExam(undefined, {
-      onSuccess: () => {
-        router.push("/exams");
-        toast.success("Exam deleted successfully");
-      },
-    });
+  const handleDeleteQuestion = () => {
+    // deleteExam(undefined, {
+    //   onSuccess: () => {
+    //     router.push("/exams");
+    toast.success("Question deleted successfully");
+    //   },
+    // });
   };
 
   const handleImmutable = () => {
     // TODO: Implement immutable functionality
-    console.log("Make exam immutable");
+    console.log("Make question immutable");
   };
 
   return (
@@ -39,7 +38,7 @@ export default function ExamHeader({
       title={title}
       editHref={editHref}
       onImmutable={handleImmutable}
-      onDelete={handleDeleteExam}
+      onDelete={handleDeleteQuestion}
       subTitle={subTitle}
     />
   );

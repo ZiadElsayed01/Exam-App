@@ -8,6 +8,7 @@ interface DiplomaHeaderProps {
   onImmutable: () => void;
   editHref: string;
   onDelete: () => void;
+  subTitle?: React.ReactNode;
 }
 
 export default function SubHeader({
@@ -15,10 +16,14 @@ export default function SubHeader({
   onImmutable,
   editHref,
   onDelete,
+  subTitle,
 }: DiplomaHeaderProps) {
   return (
     <div className="bg-white py-1.5 px-6 border-t border-gray-100 flex items-center justify-between">
-      <h1 className="text-lg font-semibold text-inter">{title}</h1>
+      <div>
+        <h1 className="text-lg font-semibold font-inter">{title}</h1>
+        {subTitle && <div>{subTitle}</div>}
+      </div>
 
       <div className="flex items-center justify-center gap-2.5">
         <Button

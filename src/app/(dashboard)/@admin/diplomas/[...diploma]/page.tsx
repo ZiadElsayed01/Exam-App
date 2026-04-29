@@ -19,7 +19,6 @@ export default async function DiplomaPage({ params }: DiplomaPageProps) {
   const [, id] = diploma;
 
   const { diploma: diplomaData } = await getDiplomaByIdAction(id);
-  console.log(diploma);
 
   if (!diploma) {
     notFound();
@@ -29,7 +28,7 @@ export default async function DiplomaPage({ params }: DiplomaPageProps) {
     <>
       <DiplomaHeader
         title={diplomaData.title}
-        editHref={`/edit-diploma/${diplomaData.id}`}
+        editHref={`/diplomas/edit-diploma/${diplomaData.id}`}
         id={diplomaData.id}
       />
 

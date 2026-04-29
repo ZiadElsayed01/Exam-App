@@ -1,4 +1,4 @@
-import { ActionsDropdown } from "@/shared/components/actions-dropdown";
+import { ActionsDropdown } from "@/shared/components/global/actions-dropdown";
 import { useDeleteQuestion } from "../hooks/use-questions";
 import { toast } from "sonner";
 

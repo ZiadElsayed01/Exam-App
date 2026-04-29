@@ -1,5 +1,5 @@
 "use client";
-import SubHeader from "@/shared/components/sub-header";
+import SubHeader from "@/shared/components/global/sub-header";
 import { useRouter } from "next/navigation";
 import { useDeleteDiploma } from "../../hooks/use-diploma";
 import { toast } from "sonner";

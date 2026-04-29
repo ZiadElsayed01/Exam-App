@@ -47,6 +47,20 @@ export async function getExamQustionsAction(
   return { questions: [] };
 }
 
+export async function getQuestionById(questionId: string) {
+  const token = await getNextAuthToken();
+
+  const response = await fetch(`${API_URL}/questions/${questionId}`, {
+    headers: {
+      ...HEADERS.AUTH(token!.token),
+    },
+  });
+
+  const payload: IApiResponse<IQuestion> = await response.json();
+
+  return payload.payload;
+}
+
 export async function deleteQuestionAction(questionId: string) {
   const token = await getNextAuthToken();
 

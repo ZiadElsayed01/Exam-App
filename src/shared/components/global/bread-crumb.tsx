@@ -46,7 +46,7 @@ export default function BreadCrumb() {
                     {segment.replace(/-/g, " ")}
                   </BreadcrumbPage>
                 ) : (
-                  <p className="text-gray-400 capitalize ml-2">
+                  <p className="text-gray-400 capitalize ml-2 max-w-50 truncate">
                     {segment.replace(/-/g, " ")}
                   </p>
                 )}

@@ -1,8 +1,8 @@
-import { SortDropdown } from "@/shared/components/sort-dropdown";
+import { SortDropdown } from "@/shared/components/global/sort-dropdown";
 import Image from "next/image";
 import { memo } from "react";
 import { examSortOptions } from "../../constants/exam.constants";
-import TableSkeleton from "@/shared/components/table-skeleton";
+import TableSkeleton from "@/shared/components/global/table-skeleton";
 import { IExam } from "../../types/exams";
 import ExamActionsDropdown from "./exam-actions-dropdown";
 import { slugify } from "@/shared/lib/utils/utils";
@@ -106,7 +106,7 @@ function ExamTable({ exams, isLoading }: ExamTableProps) {
                     editLink={`/exams/edit-exam/${exam.id}`}
                     id={exam.id}
                     adding={true}
-                    addLink="/exams/create-exam"
+                    addLink={`/exams/${slugify(exam.title)}/${exam.id}/create-new-question`}
                     addText="Add Questions"
                   />
                 </td>

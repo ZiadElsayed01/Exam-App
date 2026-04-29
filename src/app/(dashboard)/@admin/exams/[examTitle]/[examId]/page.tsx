@@ -1,14 +1,17 @@
+import ExamQuestionsTable from "@/features/exam/components/admin-dashboard/exam-questions-table";
 import { getExamByIdAction } from "@/features/exams/apis/exams.api";
 import ExamBody from "@/features/exams/components/admin-dashboard/exam-body";
 import ExamHeader from "@/features/exams/components/admin-dashboard/exam-header";
-import ExamQuestionsTable from "@/features/exam/components/admin-dashboard/exam-questions-table";
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import { getExamQustionsAction } from "@/features/questions/apis/questions.api";
+import HeaderSubTitle from "@/shared/components/global/header-sub-title";
+import { slugify } from "@/shared/lib/utils/utils";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface ExamPageProps {
   params: Promise<{
-    exam: string[];
+    examTitle: string;
+    examId: string;
   }>;
   searchParams: Promise<{
     sortBy?: string;
@@ -22,19 +25,17 @@ export default async function ExamPage({
   params,
   searchParams,
 }: ExamPageProps) {
-  const { exam } = await params;
+  const { examTitle, examId } = await params;
 
-  if (!exam || exam.length !== 2) {
+  if (!examTitle || !examId) {
     notFound();
   }
 
-  const [slug, id] = exam;
-
-  const { exam: examData } = await getExamByIdAction(id);
+  const { exam: examData } = await getExamByIdAction(examId);
 
   const searchParamsData = await searchParams;
 
-  const { questions: examQuestions } = await getExamQustionsAction(id, {
+  const { questions: examQuestions } = await getExamQustionsAction(examId, {
     sortBy: searchParamsData.sortBy,
     sortOrder: searchParamsData.sortOrder,
     search: searchParamsData.search,
@@ -46,7 +47,7 @@ export default async function ExamPage({
           : undefined,
   });
 
-  if (!exam) {
+  if (!examData) {
     notFound();
   }
 
@@ -56,6 +57,14 @@ export default async function ExamPage({
         title={examData.title}
         editHref={`/exams/edit-exam/${examData.id}`}
         id={examData.id}
+        subTitle={
+          <HeaderSubTitle
+            Title={examData.diploma?.title}
+            Id={examData.diploma?.id}
+            prefix="Diploma"
+            href={`/diplomas/${slugify(examData.diploma?.title)}/${examData.diploma?.id}`}
+          />
+        }
       />
 
       <div className="bg-gray-100 p-6 min-h-screen">
@@ -65,13 +74,13 @@ export default async function ExamPage({
           <div className="bg-primary p-2.5 flex justify-between items-center">
             <h2 className="font-semibold text-white">Exam Questions</h2>
             <Link
-              href="/"
+              href={`/exams/add-questions/${examId}`}
               className="bg-primary text-white hover:bg-primary/90"
             >
               + Add Questions
             </Link>
           </div>
-          <ExamQuestionsTable slug={slug} questions={examQuestions} />
+          <ExamQuestionsTable slug={examTitle} questions={examQuestions} />
         </div>
       </div>
     </>

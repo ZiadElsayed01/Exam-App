@@ -1,4 +1,4 @@
-import { ActionsDropdown } from "@/shared/components/actions-dropdown";
+import { ActionsDropdown } from "@/shared/components/global/actions-dropdown";
 import { toast } from "sonner";
 import { useDeleteExam } from "../../hooks/use-exam";
 

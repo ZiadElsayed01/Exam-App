@@ -1,4 +1,4 @@
-import { ActionsDropdown } from "@/shared/components/actions-dropdown";
+import { ActionsDropdown } from "@/shared/components/global/actions-dropdown";
 import { useDeleteDiploma } from "../../hooks/use-diploma";
 import { toast } from "sonner";
 

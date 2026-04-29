@@ -3,7 +3,7 @@ import ExamTable from "@/features/exams/components/admin-dashboard/exam-table";
 import SearchAndFilter from "@/features/exams/components/admin-dashboard/search-and-filter";
 import { useExamListSingle } from "@/features/exams/hooks/use-exam";
 import FallbackError from "@/shared/components/global/fallback-error";
-import Pagination from "@/shared/components/pagination";
+import Pagination from "@/shared/components/global/pagination";
 import { useMemo } from "react";
 
 export default function ExamsPage() {
@@ -27,7 +27,7 @@ export default function ExamsPage() {
       <Pagination
         data={examData}
         isLoading={isLoading}
-        href="/add-new-exam"
+        href="/exams/add-new-exam"
         addText="Add New Exam"
       />
 

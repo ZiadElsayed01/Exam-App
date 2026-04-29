@@ -1,6 +1,6 @@
 "use client";
 import QuestionActionsDropdown from "@/features/questions/components/question-actions-dropdown";
-import { SortDropdown } from "@/shared/components/sort-dropdown";
+import { SortDropdown } from "@/shared/components/global/sort-dropdown";
 import { memo } from "react";
 import { examQuestionSortOptions } from "../../constants/exam-questions.constants";
 import { IQuestion } from "../../types/questions";
@@ -45,7 +45,7 @@ function ExamQuestionsTable({ questions = [], slug }: ExamQuestionsTableProps) {
               <td className="px-4 py-2.5 whitespace-nowrap flex items-center justify-end w-20">
                 <QuestionActionsDropdown
                   viewLink={`/exams/${slugify(slug)}/questions/${slugify(question.text)}/${question.id}`}
-                  editLink={`/exams/${slugify(slug)}/questions/${question.id}/edit`}
+                  editLink={`/exams/${slugify(slug)}/${question.examId}/edit-question/${question.id}`}
                   id={question.id}
                 />
               </td>

@@ -46,7 +46,7 @@ export default function ExamBody({ examData }: ExamBodyProps) {
         <p className="text-gray-800 text-sm flex items-center gap-1">
           {examData.diploma?.title || "N/A"}
           <Link
-            href={`/diplomas/${slugify(examData.diploma?.title || "")}/${examData.diploma?.id}`}
+            href={`/diplomas/${slugify(examData.diploma?.title)}/${examData.diploma?.id}`}
           >
             <ExternalLink className="w-4.5 h-4.5" />
           </Link>
@@ -55,7 +55,7 @@ export default function ExamBody({ examData }: ExamBodyProps) {
 
       <div className="space-y-1">
         <Label className="text-sm text-gray-400 font-normal">Duration</Label>
-        <p className="text-gray-800 text-sm">{examData.duration} minutes</p>
+        <p className="text-gray-800 text-sm">{examData.duration} Minutes</p>
       </div>
 
       <div className="space-y-1">

@@ -1,8 +1,8 @@
 "use client";
 import { Ellipsis, Eye, PenLine, Plus, Trash2 } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Link from "next/link";
-import { SimpleDropdown, SimpleDropdownItem } from "./ui/simple-dropdown";
+import { SimpleDropdown, SimpleDropdownItem } from "../ui/simple-dropdown";
 
 interface IActionsDropdownProps {
   viewLink: string;

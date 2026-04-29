@@ -1,9 +1,9 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "./ui/button";
-import { SimpleDropdown, SimpleDropdownItem } from "./ui/simple-dropdown";
+import { Button } from "../ui/button";
+import { SimpleDropdown, SimpleDropdownItem } from "../ui/simple-dropdown";
 import { ArrowDownWideNarrow } from "lucide-react";
-import { ISortOption } from "../types";
+import { ISortOption } from "../../types";
 
 interface ISortDropdownProps {
   sortOptions: ISortOption[];
