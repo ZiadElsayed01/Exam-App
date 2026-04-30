@@ -30,7 +30,7 @@ export default function DiplomaBody({ diplomaData }: DiplomaBodyProps) {
 
       <div className="space-y-1">
         <Label className="text-sm text-gray-400 font-normal">Title</Label>
-        <h1 className="text-gray-800 text-sm">{diplomaData.title}</h1>
+        <p className="text-gray-800 text-sm">{diplomaData.title}</p>
       </div>
 
       <div className="space-y-1">

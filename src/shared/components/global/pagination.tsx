@@ -1,4 +1,5 @@
 "use client";
+import ClearAllAuditButton from "@/features/audit-log/components/clear-all-audit";
 import { Button } from "@/shared/components/ui/button";
 import PaginationSkeleton from "@/shared/skeletons/pagination-skeleton";
 import { IPaginatedResponse } from "@/shared/types/api";
@@ -14,6 +15,7 @@ interface PaginationProps<T> {
   isLoading?: boolean;
   href: string;
   addText: string;
+  audit?: boolean;
 }
 
 export default function Pagination<T>({
@@ -21,10 +23,12 @@ export default function Pagination<T>({
   isLoading = false,
   href,
   addText,
+  audit,
 }: PaginationProps<T>) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
 
   // Handle the case where data is an array (from infinite scroll) or single object
   const currentPageData = Array.isArray(data)
@@ -101,14 +105,18 @@ export default function Pagination<T>({
         </div>
       )}
 
-      {/* Right side - Add New button */}
-      <Link
-        href={href}
-        className="h-10 p-4 text-sm bg-emerald-500 flex items-center justify-center text-white"
-      >
-        <Plus className="mr-2.5 w-4.5 h-4.5" />
-        {addText}
-      </Link>
+      {/* Right side - Add New button || Clear All logs */}
+      {audit ? (
+        <ClearAllAuditButton />
+      ) : (
+        <Link
+          href={href}
+          className="h-10 p-4 text-sm bg-emerald-500 flex items-center justify-center text-white"
+        >
+          <Plus className="mr-2.5 w-4.5 h-4.5" />
+          {addText}
+        </Link>
+      )}
     </div>
   );
 }

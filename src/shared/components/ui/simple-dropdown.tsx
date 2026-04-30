@@ -82,7 +82,7 @@ export function SimpleDropdownItem({
   return (
     <div
       className={cn(
-        "relative flex cursor-pointer select-none items-center rounded-none bg-white p-3.5 text-sm text-black outline-none transition-colors focus:bg-blue-50",
+        "relative flex cursor-pointer select-none items-center rounded-none font-normal bg-white p-3.5 text-sm text-black outline-none transition-colors focus:bg-blue-50",
         disabled && "pointer-events-none opacity-50",
         className,
       )}

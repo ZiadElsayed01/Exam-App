@@ -40,8 +40,8 @@ const adminLinks = [
   },
   {
     id: 4,
-    name: "Audit Logs",
-    href: "/audit-logs",
+    name: "Audit Log",
+    href: "/audit-log",
     icon: <Logs className="w-6 h-6" />,
   },
 ];

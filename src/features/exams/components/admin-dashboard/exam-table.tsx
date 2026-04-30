@@ -2,7 +2,7 @@ import { SortDropdown } from "@/shared/components/global/sort-dropdown";
 import Image from "next/image";
 import { memo } from "react";
 import { examSortOptions } from "../../constants/exam.constants";
-import TableSkeleton from "@/shared/components/global/table-skeleton";
+import TableSkeleton from "@/shared/skeletons/table-skeleton";
 import { IExam } from "../../types/exams";
 import ExamActionsDropdown from "./exam-actions-dropdown";
 import { slugify } from "@/shared/lib/utils/utils";
