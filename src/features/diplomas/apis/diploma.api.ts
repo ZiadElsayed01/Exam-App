@@ -9,6 +9,7 @@ import {
 import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { getNextAuthToken } from "@/shared/lib/utils/auth.utils";
+import { DiplomaFormData } from "../schemas/diploma.schema";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -61,7 +62,9 @@ export async function getDiplomasAction(req: NextRequest) {
   return payload;
 }
 
-export async function getDiplomaByIdAction(diplomaId: string) {
+export async function getDiplomaByIdAction(
+  diplomaId: string,
+): Promise<IDiploma | undefined> {
   const token = await getNextAuthToken();
 
   const response = await fetch(`${API_URL}/diplomas/${diplomaId}`, {
@@ -70,17 +73,21 @@ export async function getDiplomaByIdAction(diplomaId: string) {
     },
   });
 
-  const payload: IApiResponse<IDiploma> = await response.json();
+  const data: IApiResponse<{ diploma: IDiploma }> = await response.json();
+  if (!data.status || !data.payload) {
+    return undefined;
+  }
 
-  return payload.payload;
+  return data.payload.diploma;
 }
 
-export async function createDiplomaAction(diplomaId: string, values) {
+export async function createDiplomaAction(values: DiplomaFormData) {
   const token = await getNextAuthToken();
-  const response = await fetch(`${API_URL}/diplomas/${diplomaId}`, {
+  const response = await fetch(`${API_URL}/diplomas`, {
     method: "POST",
     headers: {
       ...HEADERS.AUTH(token!.token),
+      ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
   });
@@ -90,12 +97,16 @@ export async function createDiplomaAction(diplomaId: string, values) {
   return payload;
 }
 
-export async function updateDiplomaAction(diplomaId: string, values) {
+export async function updateDiplomaAction(
+  diplomaId: string,
+  values: DiplomaFormData,
+) {
   const token = await getNextAuthToken();
   const response = await fetch(`${API_URL}/diplomas/${diplomaId}`, {
     method: "PUT",
     headers: {
       ...HEADERS.AUTH(token!.token),
+      ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
   });

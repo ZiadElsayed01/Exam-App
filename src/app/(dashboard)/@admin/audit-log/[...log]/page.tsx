@@ -11,7 +11,6 @@ interface AuditLogPageProps {
 
 export default async function AuditLogPage({ params }: AuditLogPageProps) {
   const { log } = await params;
-  console.log(log);
 
   if (!log || log.length === 0) {
     notFound();

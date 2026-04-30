@@ -28,3 +28,7 @@ export interface IDocumentsFields {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IImageUploadingResponse {
+  url: string;
+}

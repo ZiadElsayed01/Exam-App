@@ -152,12 +152,12 @@ function SearchAndFilter() {
             }}
           >
             <SelectTrigger className="w-full h-10">
-              <SelectValue placeholder="Select User">
+              <SelectValue placeholder="User">
                 {user
                   ? users.find(
                       (selectedUser: IUser) => selectedUser.id === user,
                     )?.username
-                  : "Select User"}
+                  : "User"}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>

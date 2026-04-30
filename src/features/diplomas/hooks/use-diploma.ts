@@ -9,7 +9,8 @@ import { IDiploma } from "../types/diploma";
 import { DIPLOMA_KEYS } from "../apis/diploma.options";
 import { useSearchParams } from "next/navigation";
 import { PAGINATION_LIMIT } from "@/shared/constants/api-headers.constants";
-import { deleteDiplomaAction } from "../apis/diploma.api";
+import { createDiplomaAction, deleteDiplomaAction, updateDiplomaAction } from "../apis/diploma.api";
+import { DiplomaFormData } from "../schemas/diploma.schema";
 
 export default function useDiplomaList() {
   const searchParams = useSearchParams();
@@ -119,7 +120,47 @@ export function useDiplomaListSingle() {
       return data.payload;
     },
     refetchOnWindowFocus: true,
-    staleTime: 0, // Ensure fresh data when navigating back
+    staleTime: 0,
+  });
+}
+
+export function useCreateDiploma() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["create-Diploma"],
+    mutationFn: async (values: DiplomaFormData) => {
+      const response = await createDiplomaAction(values);
+
+      if (!response?.status) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["diplomas"] });
+    },
+  });
+}
+
+export function useUpdateDiploma(diplomaId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update-Diploma"],
+    mutationFn: async (values: DiplomaFormData) => {
+      const response = await updateDiplomaAction(diplomaId, values);
+
+      if (!response?.status) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["diplomas"] });
+    },
   });
 }
 

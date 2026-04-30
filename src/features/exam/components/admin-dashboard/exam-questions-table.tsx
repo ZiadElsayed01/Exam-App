@@ -12,7 +12,6 @@ interface ExamQuestionsTableProps {
 }
 
 function ExamQuestionsTable({ questions = [], slug }: ExamQuestionsTableProps) {
-  console.log(questions);
   return (
     <>
       {/* Table */}

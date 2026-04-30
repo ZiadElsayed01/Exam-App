@@ -18,9 +18,9 @@ export default async function DiplomaPage({ params }: DiplomaPageProps) {
 
   const [, id] = diploma;
 
-  const { diploma: diplomaData } = await getDiplomaByIdAction(id);
+  const diplomaData = await getDiplomaByIdAction(id);
 
-  if (!diploma) {
+  if (!diplomaData) {
     notFound();
   }
 

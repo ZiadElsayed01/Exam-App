@@ -8,7 +8,6 @@ import { useMemo } from "react";
 
 export default function AuditLogPage() {
   const { data: auditLogData, isLoading, error } = useAuditLogList();
-  console.log(auditLogData);
 
   // Memoize audit logs data to prevent unnecessary re-renders
   const auditLogs = useMemo(

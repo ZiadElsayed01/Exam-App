@@ -6,7 +6,6 @@ export default function useConfirmNewEmail() {
   return useMutation({
     mutationKey: ["update-password"],
     mutationFn: async (values: ConfirmEmailFormData) => {
-      console.log(values);
       const response = await confirmEmailChange(values);
 
       if (!response?.status) {

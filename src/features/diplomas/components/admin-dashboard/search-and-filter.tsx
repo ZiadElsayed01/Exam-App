@@ -1,5 +1,4 @@
 "use client";
-
 import { memo, useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/shared/components/ui/button";
@@ -29,17 +28,6 @@ function SearchAndFilter() {
     { value: "true", label: "Mutable" },
   ];
 
-  // Memoize search and filter handlers to prevent re-renders
-  const onSearch = useCallback((title: string, immutability: string) => {
-    console.log("Search:", { title, immutability });
-    // Search is handled by URL params in SearchAndFilter component
-  }, []);
-
-  const onClear = useCallback(() => {
-    console.log("Clear search");
-    // Clear is handled by URL params in SearchAndFilter component
-  }, []);
-
   const handleApply = useCallback(() => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -58,11 +46,7 @@ function SearchAndFilter() {
     params.set("page", "1");
 
     router.push(`${window.location.pathname}?${params.toString()}`);
-
-    if (onSearch) {
-      onSearch(title.trim(), immutability);
-    }
-  }, [title, immutability, searchParams, router, onSearch]);
+  }, [title, immutability, searchParams, router]);
 
   const handleClear = useCallback(() => {
     setTitle("");
@@ -72,11 +56,7 @@ function SearchAndFilter() {
     params.set("page", "1");
 
     router.push(`${window.location.pathname}?${params.toString()}`);
-
-    if (onClear) {
-      onClear();
-    }
-  }, [router, onClear]);
+  }, [router]);
 
   return (
     <div className="w-full bg-white">
