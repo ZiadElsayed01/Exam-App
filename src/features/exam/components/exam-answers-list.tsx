@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { ExamQuestionsFormValues } from "./exam-questions-form";
+import { ExamQuestionsFormValues } from "../types/submisstions";
 
 export default function ExamAnswersList({
   questionId,

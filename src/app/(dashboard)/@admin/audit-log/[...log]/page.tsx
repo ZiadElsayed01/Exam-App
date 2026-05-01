@@ -18,7 +18,7 @@ export default async function AuditLogPage({ params }: AuditLogPageProps) {
 
   const auditLogId = log[log.length - 1];
 
-  const { auditLog } = await getAuditLogByIdAction(auditLogId);
+  const auditLog = await getAuditLogByIdAction(auditLogId);
 
   if (!auditLog) {
     notFound();

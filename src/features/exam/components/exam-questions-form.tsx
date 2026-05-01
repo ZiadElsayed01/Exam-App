@@ -17,7 +17,7 @@ import type { IApiResponse, IErrorResponse } from "@/shared/types/api";
 interface ExamQuestionsFormProps {
   examId: string;
   questionsPromiss: Promise<{ questions: IQuestion[] }>;
-  examPromise: Promise<{ exam: IExam }>;
+  examPromise: Promise<IExam>;
 }
 
 export default function ExamQuestionsForm({
@@ -25,7 +25,7 @@ export default function ExamQuestionsForm({
   questionsPromiss,
   examPromise,
 }: ExamQuestionsFormProps) {
-  const { exam } = use(examPromise);
+  const exam  = use(examPromise);
   const { questions } = use(questionsPromiss);
 
   const total = questions.length;

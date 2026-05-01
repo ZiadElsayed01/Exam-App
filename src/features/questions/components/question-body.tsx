@@ -3,12 +3,18 @@ import { Label } from "@/shared/components/ui/label";
 import { slugify } from "@/shared/lib/utils/utils";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface IQuestionBodyProps {
-  question: IQuestion;
+  question?: IQuestion;
 }
 
 export default function QuestionBody({ question }: IQuestionBodyProps) {
+
+  if (!question) {
+    return notFound();
+  }
+
   return (
     <div className="p-4 flex flex-col gap-4 bg-white">
       <div className="space-y-1">

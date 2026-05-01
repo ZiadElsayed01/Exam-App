@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface QuestionHeaderProps {
-  title: string;
+  title?: string;
   editHref: string;
   id: string;
   subTitle: React.ReactNode;

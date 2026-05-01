@@ -83,6 +83,10 @@ export async function getAuditLogByIdAction(auditLogId: string) {
 
   const data: IApiResponse<IAuditLog> = await response.json();
 
+  if (!data.status || !data.payload) {
+    return undefined;
+  }
+
   return data.payload;
 }
 

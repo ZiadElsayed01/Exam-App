@@ -1,25 +1,15 @@
 import { PAGINATION_LIMIT } from "@/shared/constants/api-headers.constants";
 import { IApiResponse, IPaginatedResponse } from "@/shared/types/api";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { IExam } from "../types/exams";
 import { EXAMS_KEYS } from "../apis/exam.options";
 
-interface UseExamListProps {
-  diplomaId: string;
-}
-
-export default function useExamList({ diplomaId }: UseExamListProps) {
-  const searchParams = useSearchParams();
-
-  const page = Number(searchParams.get("page") || 1);
-  const limit = Number(searchParams.get("limit") || PAGINATION_LIMIT);
-
+export default function useExamDropdown() {
   return useInfiniteQuery({
-    queryKey: EXAMS_KEYS.list(page, limit, "", "", "", diplomaId),
+    queryKey: EXAMS_KEYS.dropdown(),
     queryFn: async ({ pageParam }) => {
       const response = await fetch(
-        `/api/exams?diplomaId=${diplomaId}&page=${pageParam}&limit=${limit}`,
+        `/api/exams?page=${pageParam}&limit=${PAGINATION_LIMIT}`,
       );
 
       const data: IApiResponse<IPaginatedResponse<IExam>> =

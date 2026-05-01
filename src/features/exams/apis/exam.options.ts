@@ -20,4 +20,5 @@ export const EXAMS_KEYS = {
       diplomaId,
       immutable,
     ] as const,
+  dropdown: () => ["exams", "dropdown"] as const,
 } as const;

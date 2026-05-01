@@ -1,5 +1,5 @@
 "use client";
-import { Save } from "lucide-react";
+import { Save, Layers } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
@@ -7,18 +7,37 @@ interface ISaveCancelButtonsProps {
   isEdit?: boolean;
   title?: string;
   subTitle?: React.ReactNode;
+  bulkMode?: boolean;
+  onBulkModeToggle?: () => void;
 }
 
 export default function SaveCancelButtons({
   isEdit,
   title,
   subTitle,
+  bulkMode,
+  onBulkModeToggle,
 }: ISaveCancelButtonsProps) {
   const router = useRouter();
   return (
     <div
-      className={`px-6 py-1.5 border-t border-gray-100 flex items-center bg-white ${isEdit ? "justify-between" : " justify-end"}`}
+      className={`px-6 py-1.5 border-t border-gray-100 flex items-center bg-white ${isEdit ? "justify-between" : " justify-between"}`}
     >
+      {bulkMode ? (
+        <div>
+          <h1 className="text-lg font-semibold">Bulk Add Mode</h1>
+        </div>
+      ) : (
+        <Button
+          type="button"
+          onClick={onBulkModeToggle}
+          className="h-9 px-4 text-sm bg-blue-500 text-white flex items-center gap-2"
+        >
+          <Layers className="w-4 h-4" />
+          Bulk Add Mode
+        </Button>
+      )}
+
       {isEdit && (
         <div>
           {title && <h1 className="text-lg font-semibold">{title}</h1>}

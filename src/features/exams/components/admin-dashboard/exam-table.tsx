@@ -106,7 +106,7 @@ function ExamTable({ exams, isLoading }: ExamTableProps) {
                     editLink={`/exams/edit-exam/${exam.id}`}
                     id={exam.id}
                     adding={true}
-                    addLink={`/exams/${slugify(exam.title)}/${exam.id}/create-new-question`}
+                    addLink={`/exams/create-new-question/${exam.id}`}
                     addText="Add Questions"
                   />
                 </td>

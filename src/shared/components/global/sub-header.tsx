@@ -4,7 +4,7 @@ import { Ban, PencilLine, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 interface DiplomaHeaderProps {
-  title: string;
+  title?: string;
   onImmutable: () => void;
   editHref: string;
   onDelete: () => void;

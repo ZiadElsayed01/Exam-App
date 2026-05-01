@@ -74,7 +74,7 @@ export default async function ExamPage({
           <div className="bg-primary p-2.5 flex justify-between items-center">
             <h2 className="font-semibold text-white">Exam Questions</h2>
             <Link
-              href={`/exams/${slugify(examData.title)}/${examData.id}/create-new-question`}
+              href={`/exams/create-new-question/${examData.id}`}
               className="bg-primary text-white hover:bg-primary/90"
             >
               + Add Questions

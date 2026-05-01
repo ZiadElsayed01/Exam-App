@@ -16,20 +16,20 @@ interface IQuestionPageProps {
 export default async function QuestionPage({ params }: IQuestionPageProps) {
   const { questionId } = await params;
 
-  const { question } = await getQuestionById(questionId);
+  const question = await getQuestionById(questionId);
 
   return (
     <>
       <QuestionHeader
-        title={question.text}
-        editHref={`/exams/edit-exam/${question.examId}`}
+        title={question?.text}
+        editHref={`/exams/edit-exam/${question?.examId}`}
         id={questionId}
         subTitle={
           <HeaderSubTitle
-            Title={question.exam.title}
-            Id={question.examId}
+            Title={question?.exam.title}
+            Id={question?.examId}
             prefix="Exam"
-            href={`/exams/${slugify(question.exam.title)}/${question.examId}`}
+            href={`/exams/${slugify(question!.exam.title)}/${question?.examId}`}
           />
         }
       />

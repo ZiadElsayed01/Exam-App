@@ -63,7 +63,7 @@ export async function getExamsAction(req: NextRequest) {
 
 export async function getExamByIdAction(
   id: string,
-): Promise<IExam | undefined> {
+): Promise< IExam | undefined> {
   const token = await getNextAuthToken();
 
   const response = await fetch(`${API_URL}/exams/${id}`, {
@@ -72,13 +72,13 @@ export async function getExamByIdAction(
     },
   });
 
-  const payload: IApiResponse<{ exam: IExam }> = await response.json();
+  const payload: IApiResponse<IExam> = await response.json();
 
   if (!payload.status || !payload.payload) {
     return undefined;
   }
 
-  return payload.payload.exam;
+  return payload.payload;
 }
 
 export async function deleteExamAction(id: string) {

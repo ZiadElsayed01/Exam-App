@@ -3,6 +3,10 @@ import { getNextAuthToken } from "@/shared/lib/utils/auth.utils";
 import { HEADERS } from "@/shared/constants/api-headers.constants";
 import { IApiResponse } from "@/shared/types/api";
 import { IQuestion } from "@/features/exam/types/questions";
+import {
+  QuestionFormData,
+  BulkQuestionsFormData,
+} from "../schemas/question.schema";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -56,22 +60,84 @@ export async function getQuestionById(questionId: string) {
     },
   });
 
-  const payload: IApiResponse<IQuestion> = await response.json();
+  const payload: IApiResponse<{ question: IQuestion }> = await response.json();
 
-  return payload.payload;
+  if (!payload.status || !payload.payload) {
+    return undefined;
+  }
+
+  return payload.payload.question;
+}
+
+export async function createBulkQuestionsAction(
+  examId: string,
+  values: BulkQuestionsFormData,
+) {
+  const token = await getNextAuthToken();
+
+  const response = await fetch(`${API_URL}/questions/exam/${examId}/bulk`, {
+    method: "POST",
+    headers: {
+      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.JSON,
+    },
+    body: JSON.stringify(values),
+  });
+
+  const payload: IApiResponse<void> = await response.json();
+
+  return payload;
+}
+
+export async function createQuestionAction(values: QuestionFormData) {
+  const token = await getNextAuthToken();
+
+  const response = await fetch(`${API_URL}/questions`, {
+    method: "POST",
+    headers: {
+      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.JSON,
+    },
+    body: JSON.stringify(values),
+  });
+
+  const payload: IApiResponse<void> = await response.json();
+
+  return payload;
+}
+
+export async function updateQuestionAction(
+  questionId: string,
+  values: QuestionFormData,
+) {
+  const token = await getNextAuthToken();
+  const { examId, ...questionData } = values;
+
+  const response = await fetch(`${API_URL}/questions/${questionId}`, {
+    method: "PUT",
+    headers: {
+      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.JSON,
+    },
+    body: JSON.stringify(questionData),
+  });
+
+  const payload: IApiResponse<void> = await response.json();
+
+  return payload;
 }
 
 export async function deleteQuestionAction(questionId: string) {
   const token = await getNextAuthToken();
 
-  const response = await fetch(`${API_URL}/questions/exam/${questionId}`, {
+  const response = await fetch(`${API_URL}/questions/${questionId}`, {
     method: "DELETE",
     headers: {
       ...HEADERS.AUTH(token!.token),
     },
   });
 
-  const payload: IApiResponse<IQuestion> = await response.json();
+  const payload: IApiResponse<void> = await response.json();
 
   return payload;
 }

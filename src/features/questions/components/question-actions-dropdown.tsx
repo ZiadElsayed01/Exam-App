@@ -1,6 +1,8 @@
 import { ActionsDropdown } from "@/shared/components/global/actions-dropdown";
-import { useDeleteQuestion } from "../hooks/use-questions";
+
 import { toast } from "sonner";
+import { useDeleteQuestion } from "../hooks/use-question";
+import { useRouter } from "next/navigation";
 
 interface QuestionActionsDropdown {
   viewLink: string;
@@ -13,12 +15,14 @@ export default function QuestionActionsDropdown({
   editLink,
   id,
 }: QuestionActionsDropdown) {
+  const router = useRouter();
   const { mutate: deleteQuestion } = useDeleteQuestion(id);
 
   const handleDeleteQuestion = () => {
     deleteQuestion(undefined, {
       onSuccess: () => {
         toast.success("Question deleted successfully");
+        router.refresh();
       },
     });
   };
