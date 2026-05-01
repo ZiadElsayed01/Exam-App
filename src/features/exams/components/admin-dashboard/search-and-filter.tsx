@@ -12,9 +12,8 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { ChevronsDownUp, Search, SlidersHorizontal } from "lucide-react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import useDiplomaDropdown from "@/features/diplomas/hooks/use-diploma-dropdown";
-import { IDiploma } from "@/features/diplomas/types/diploma";
+import DiplomaSelect from "../../../../shared/components/global/diploma-select";
 
 function SearchAndFilter() {
   const router = useRouter();
@@ -114,46 +113,13 @@ function SearchAndFilter() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            {/* Diploma Select */}
-            <Select
-              value={diplomaId || ""}
-              onValueChange={(value) => {
-                setDiplomaId(value!);
-              }}
-            >
-              <SelectTrigger className="w-81.5 h-10 capitalize">
-                <SelectValue placeholder="Select Diploma">
-                  {diplomaId
-                    ? diplomas.find(
-                        (diploma: IDiploma) => diploma.id === diplomaId,
-                      )?.title
-                    : "Select Diploma"}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <div
-                  id="diploma-dropdown-scroll"
-                  className="max-h-50 overflow-auto"
-                >
-                  <InfiniteScroll
-                    dataLength={diplomas?.length}
-                    next={() => fetchNextPage()}
-                    hasMore={hasNextPage}
-                    loader={
-                      <div className="p-2 text-center text-sm">Loading...</div>
-                    }
-                    scrollableTarget="diploma-dropdown-scroll"
-                  >
-                    <SelectItem value="">None</SelectItem>
-                    {diplomas.map((diploma: IDiploma) => (
-                      <SelectItem key={diploma.id} value={diploma.id}>
-                        {diploma.title}
-                      </SelectItem>
-                    ))}
-                  </InfiniteScroll>
-                </div>
-              </SelectContent>
-            </Select>
+            <DiplomaSelect
+              value={diplomaId}
+              onValueChange={(value) => setDiplomaId(value || "")}
+              diplomas={diplomas}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+            />
 
             {/* Immutability Select */}
             <Select

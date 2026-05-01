@@ -3,7 +3,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { IExam } from "../types/exams";
 import { EXAMS_KEYS } from "../apis/exam.options";
 import { useSearchParams } from "next/navigation";
-import { deleteExamAction } from "../apis/exams.api";
+import {
+  deleteExamAction,
+  createExamAction,
+  updateExamAction,
+} from "../apis/exams.api";
+import { ExamFormData } from "../schemas/exam.schema";
 
 export function useExamListSingle() {
   const searchParams = useSearchParams();
@@ -64,6 +69,46 @@ export function useDeleteExam(examId: string) {
     mutationKey: ["delete-exam"],
     mutationFn: async () => {
       const response = await deleteExamAction(examId);
+
+      if (!response?.status) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["exams"] });
+    },
+  });
+}
+
+export function useCreateExam() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["create-exam"],
+    mutationFn: async (values: ExamFormData) => {
+      const response = await createExamAction(values);
+
+      if (!response?.status) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["exams"] });
+    },
+  });
+}
+
+export function useUpdateExam(examId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update-exam"],
+    mutationFn: async (values: ExamFormData) => {
+      const response = await updateExamAction(examId, values);
 
       if (!response?.status) {
         throw new Error(response.message);

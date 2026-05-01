@@ -1,7 +1,5 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, FormProvider, useForm } from "react-hook-form";
-import { DiplomaFormData, diplomaSchema } from "../../schemas/diploma.schema";
+import ImageField from "@/shared/components/global/image-field";
 import SaveCancelButtons from "@/shared/components/global/save-cancel-buttons";
 import {
   Field,
@@ -10,9 +8,11 @@ import {
   FieldLabel,
 } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
-import ImageField from "@/shared/components/global/image-field";
-import { useCreateDiploma, useUpdateDiploma } from "../../hooks/use-diploma";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { Controller, FormProvider, useForm } from "react-hook-form";
+import { useCreateDiploma, useUpdateDiploma } from "../../hooks/use-diploma";
+import { DiplomaFormData, diplomaSchema } from "../../schemas/diploma.schema";
 import { IDiploma } from "../../types/diploma";
 
 interface DiplomaFormProps {
@@ -59,7 +59,7 @@ export default function DiplomaForm({
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <SaveCancelButtons />
+        <SaveCancelButtons isEdit={isEdit} title={diploma?.title} />
 
         <div className="p-6 bg-gray-100 min-h-screen">
           <div className="bg-primary p-4 text-white">Diploma Information</div>

@@ -15,7 +15,7 @@ export default async function AdminLayout({
   return (
     <>
       <BreadCrumb />
-      <main className="bg-gray-100">{children}</main>
+      <main className="bg-gray-100 min-h-screen">{children}</main>
     </>
   );
 }

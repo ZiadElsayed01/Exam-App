@@ -14,11 +14,5 @@ export default async function EditDiplomaPage({
 
   const diploma = await getDiplomaByIdAction(diplomaId);
 
-  return (
-    <DiplomaForm
-      isEdit
-      diplomaId={diplomaId}
-      diploma={diploma}
-    />
-  );
+  return <DiplomaForm isEdit diplomaId={diplomaId} diploma={diploma} />;
 }

@@ -19,7 +19,7 @@ export default function HeaderSubTitle({
   }
 
   return (
-    <p className="text-gray-400 text-sm flex items-center gap-1 font-inter">
+    <div className="text-gray-400 text-sm flex items-center gap-1 font-inter">
       {prefix}
       {": "}
       <Link
@@ -28,6 +28,6 @@ export default function HeaderSubTitle({
       >
         {Title} <ExternalLink className="w-3.5 h-3.5" />
       </Link>
-    </p>
+    </div>
   );
 }

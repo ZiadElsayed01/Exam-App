@@ -55,7 +55,7 @@ function ExamQuestionsTable({ questions = [], slug }: ExamQuestionsTableProps) {
 
       {!questions ||
         (questions.length === 0 && (
-          <div className="text-center py-8">
+          <div className="text-center bg-white py-8">
             <p className="text-gray-500">No questions found</p>
           </div>
         ))}

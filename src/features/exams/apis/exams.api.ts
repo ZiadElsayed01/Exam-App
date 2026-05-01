@@ -9,6 +9,7 @@ import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { IExam } from "../types/exams";
 import { getNextAuthToken } from "@/shared/lib/utils/auth.utils";
+import { ExamFormData } from "../schemas/exam.schema";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -60,26 +61,24 @@ export async function getExamsAction(req: NextRequest) {
   return payload;
 }
 
-export async function getExamByIdAction(id: string) {
+export async function getExamByIdAction(
+  id: string,
+): Promise<IExam | undefined> {
   const token = await getNextAuthToken();
-
-  if (!token) {
-    return {
-      status: false,
-      message: "No token provided",
-      code: 401,
-    } as IErrorResponse;
-  }
 
   const response = await fetch(`${API_URL}/exams/${id}`, {
     headers: {
-      ...HEADERS.AUTH(token.token),
+      ...HEADERS.AUTH(token!.token),
     },
   });
 
   const payload: IApiResponse<{ exam: IExam }> = await response.json();
 
-  return payload.payload;
+  if (!payload.status || !payload.payload) {
+    return undefined;
+  }
+
+  return payload.payload.exam;
 }
 
 export async function deleteExamAction(id: string) {
@@ -98,6 +97,38 @@ export async function deleteExamAction(id: string) {
     headers: {
       ...HEADERS.AUTH(token.token),
     },
+  });
+
+  const payload: IApiResponse<IExam> = await response.json();
+
+  return payload;
+}
+
+export async function createExamAction(values: ExamFormData) {
+  const token = await getNextAuthToken();
+  const response = await fetch(`${API_URL}/exams`, {
+    method: "POST",
+    headers: {
+      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.JSON,
+    },
+    body: JSON.stringify(values),
+  });
+
+  const payload: IApiResponse<IExam> = await response.json();
+
+  return payload;
+}
+
+export async function updateExamAction(examId: string, values: ExamFormData) {
+  const token = await getNextAuthToken();
+  const response = await fetch(`${API_URL}/exams/${examId}`, {
+    method: "PUT",
+    headers: {
+      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.JSON,
+    },
+    body: JSON.stringify(values),
   });
 
   const payload: IApiResponse<IExam> = await response.json();
