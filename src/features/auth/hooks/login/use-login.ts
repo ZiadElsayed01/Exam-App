@@ -1,8 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { LoginCredentials } from "../../types/auth";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function useLogin() {
+  const router = useRouter();
   //Mutation
   return useMutation({
     mutationFn: async (values: LoginCredentials) => {
@@ -21,7 +23,8 @@ export default function useLogin() {
     onSuccess: () => {
       const callbackUrl =
         new URLSearchParams(location.search).get("callbackUrl") || "/";
-      window.location.href = callbackUrl;
+
+      router.push(callbackUrl);
     },
   });
 }

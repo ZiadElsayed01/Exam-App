@@ -93,7 +93,7 @@ export default function LoginForm() {
       {/* Submit button */}
       <Button
         type="submit"
-        className="mt-10"
+        className="mt-10 w-full"
         disabled={
           isPending || (form.formState.isSubmitted && !form.formState.isValid)
         }
