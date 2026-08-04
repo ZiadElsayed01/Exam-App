@@ -9,7 +9,12 @@ import { IDiploma } from "../types/diploma";
 import { DIPLOMA_KEYS } from "../apis/diploma.options";
 import { useSearchParams } from "next/navigation";
 import { PAGINATION_LIMIT } from "@/shared/constants/api-headers.constants";
-import { createDiplomaAction, deleteDiplomaAction, updateDiplomaAction } from "../apis/diploma.api";
+import {
+  createDiplomaAction,
+  deleteDiplomaAction,
+  immutableDiplomaAction,
+  updateDiplomaAction,
+} from "../apis/diploma.api";
 import { DiplomaFormData } from "../schemas/diploma.schema";
 
 export default function useDiplomaList() {
@@ -171,6 +176,26 @@ export function useDeleteDiploma(diplomaId: string) {
     mutationKey: ["delete-Diploma"],
     mutationFn: async () => {
       const response = await deleteDiplomaAction(diplomaId);
+
+      if (!response?.status) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["diplomas"] });
+    },
+  });
+}
+
+export function useImmutableDiploma(diplomaId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["immutable-Diploma"],
+    mutationFn: async () => {
+      const response = await immutableDiplomaAction(diplomaId);
 
       if (!response?.status) {
         throw new Error(response.message);

@@ -17,6 +17,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import useUpdatePassword from "../hooks/use-update-password";
+import { signOut } from "next-auth/react";
 
 export default function UpdatePasswordForm() {
   const { mutate: updatePassword, isPending, error } = useUpdatePassword();
@@ -33,8 +34,9 @@ export default function UpdatePasswordForm() {
   const onSubmit = (data: UpdatePasswordFormData) => {
     updatePassword(data, {
       onSuccess: () => {
-        toast.success("Your password has been updated.");
+        toast.success("Your password has been updated. Please sign in again.");
         form.reset();
+        signOut({ callbackUrl: "/login" });
       },
     });
   };

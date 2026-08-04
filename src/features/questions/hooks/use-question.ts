@@ -8,6 +8,7 @@ import {
   updateQuestionAction,
   deleteQuestionAction,
   createBulkQuestionsAction,
+  immutableQuestionAction,
 } from "../apis/questions.api";
 
 export function useCreateBulkQuestion() {
@@ -80,6 +81,26 @@ export function useDeleteQuestion(questionId: string) {
     mutationKey: ["delete-question"],
     mutationFn: async () => {
       const response = await deleteQuestionAction(questionId);
+
+      if (!response?.status) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["exams"] });
+    },
+  });
+}
+
+export function useImmutableQuestion(questionId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["immutable-Question"],
+    mutationFn: async () => {
+      const response = await immutableQuestionAction(questionId);
 
       if (!response?.status) {
         throw new Error(response.message);

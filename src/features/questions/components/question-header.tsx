@@ -2,6 +2,7 @@
 import SubHeader from "@/shared/components/global/sub-header";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useDeleteQuestion, useImmutableQuestion } from "../hooks/use-question";
 
 interface QuestionHeaderProps {
   title?: string;
@@ -17,20 +18,27 @@ export default function QuestionHeader({
   subTitle,
 }: QuestionHeaderProps) {
   const router = useRouter();
-  // const { mutate: deleteExam } = useDeleteExam(id);
+  const { mutate: deleteQuestion } = useDeleteQuestion(id);
+  const { mutate: immutableQuestion } = useImmutableQuestion(id);
 
   const handleDeleteQuestion = () => {
-    // deleteExam(undefined, {
-    //   onSuccess: () => {
-    //     router.push("/exams");
-    toast.success("Question deleted successfully");
-    //   },
-    // });
+    deleteQuestion(undefined, {
+      onSuccess: () => {
+        router.back();
+        toast.success("Question deleted successfully");
+      },
+    });
   };
 
   const handleImmutable = () => {
-    // TODO: Implement immutable functionality
-    console.log("Make question immutable");
+    immutableQuestion(undefined, {
+      onSuccess: (payload) => {
+        toast.success(payload.message);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
   };
 
   return (

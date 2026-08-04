@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { use } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import useAccount from "../hooks/use-account";
 import { UserUpdateInfoFormData } from "../schemas/update-account.schema";
@@ -22,6 +23,7 @@ interface UpdateProfileProps {
 
 export default function UpdateProfile({ profilePromise }: UpdateProfileProps) {
   const user = use(profilePromise);
+  const router = useRouter();
   const { updateProfile, isUpdating, updateError } = useAccount();
 
   const form = useForm<UserInfoFormData>({
@@ -44,6 +46,7 @@ export default function UpdateProfile({ profilePromise }: UpdateProfileProps) {
     updateProfile(updatedValues, {
       onSuccess: () => {
         toast.success("Your profile has been updated.");
+        router.refresh();
       },
     });
   };

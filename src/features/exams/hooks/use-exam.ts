@@ -7,6 +7,7 @@ import {
   deleteExamAction,
   createExamAction,
   updateExamAction,
+  immutableExamAction,
 } from "../apis/exams.api";
 import { ExamFormData } from "../schemas/exam.schema";
 
@@ -109,6 +110,26 @@ export function useUpdateExam(examId: string) {
     mutationKey: ["update-exam"],
     mutationFn: async (values: ExamFormData) => {
       const response = await updateExamAction(examId, values);
+
+      if (!response?.status) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["exams"] });
+    },
+  });
+}
+
+export function useImmutableExam(examId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["immutable-Exam"],
+    mutationFn: async () => {
+      const response = await immutableExamAction(examId);
 
       if (!response?.status) {
         throw new Error(response.message);

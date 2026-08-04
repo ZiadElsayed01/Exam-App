@@ -26,20 +26,24 @@ import { useMemo, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { Check, CheckCheck, Plus, Trash2, X } from "lucide-react";
 import { slugify } from "@/shared/lib/utils/utils";
+import FallbackError from "@/shared/components/global/fallback-error";
 
 interface BulkQuestionFormProps {
   preselectedExamId?: string;
   preselectedExamTitle?: string;
+  setBulkMode?: (value: boolean) => void;
 }
 
 export default function BulkQuestionForm({
   preselectedExamId,
   preselectedExamTitle,
+  setBulkMode,
 }: BulkQuestionFormProps) {
   const [openAnswers, setOpenAnswers] = useState<boolean[][]>([]);
   const [showAddInput, setShowAddInput] = useState<boolean[]>([]);
+  const [answerDrafts, setAnswerDrafts] = useState<Record<number, string>>({});
   const [activeTab, setActiveTab] = useState(0);
-  const { mutate: createBulkQuestions } = useCreateBulkQuestion();
+  const { mutate: createBulkQuestions, error } = useCreateBulkQuestion();
   const router = useRouter();
 
   const { data: examData, hasNextPage, fetchNextPage } = useExamDropdown();
@@ -80,7 +84,6 @@ export default function BulkQuestionForm({
 
   const onSubmit = (data: BulkQuestionsFormData) => {
     if (!selectedExamId) {
-      console.error("No exam selected");
       return;
     }
     createBulkQuestions(
@@ -119,11 +122,12 @@ export default function BulkQuestionForm({
     }
   };
 
-  const handleAddAnswer = (questionIndex: number, answerText: string) => {
+  const handleAddAnswer = (questionIndex: number) => {
+    const answerText = answerDrafts[questionIndex] ?? "";
     const currentAnswers = form.getValues(`questions.${questionIndex}.answers`);
-    if (currentAnswers.length < 4) {
+    if (currentAnswers.length < 4 && answerText.trim()) {
       const newAnswer = {
-        text: answerText,
+        text: answerText.trim(),
         isCorrect: false,
       };
       form.setValue(`questions.${questionIndex}.answers`, [
@@ -131,7 +135,6 @@ export default function BulkQuestionForm({
         newAnswer,
       ]);
 
-      // Update openAnswers state
       setOpenAnswers((prev) => {
         const newOpenAnswers = [...prev];
         newOpenAnswers[questionIndex] = [
@@ -141,19 +144,12 @@ export default function BulkQuestionForm({
         return newOpenAnswers;
       });
 
-      // Hide the input field
-      const newShowAddInput = [...showAddInput];
-      newShowAddInput[questionIndex] = false;
-      setShowAddInput(newShowAddInput);
-
-      // Clear the input
-      const inputs = document.querySelectorAll(
-        `input[placeholder="Enter answer body"]`,
-      );
-      const lastInput = inputs[inputs.length - 1] as HTMLInputElement;
-      if (lastInput) {
-        lastInput.value = "";
-      }
+      setAnswerDrafts((prev) => ({ ...prev, [questionIndex]: "" }));
+      setShowAddInput((prev) => {
+        const next = [...prev];
+        next[questionIndex] = false;
+        return next;
+      });
     }
   };
 
@@ -195,7 +191,11 @@ export default function BulkQuestionForm({
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <SaveCancelButtons bulkMode={true} />
+        <SaveCancelButtons
+          bulkMode={true}
+          showBulkMode={true}
+          onBulkModeToggle={() => setBulkMode?.(false)}
+        />
 
         <div className="p-6">
           <div className="bg-primary p-2.5 text-white">
@@ -271,6 +271,7 @@ export default function BulkQuestionForm({
             {/* Tab Content */}
 
             <div className="bg-white border border-primary">
+              {error && <FallbackError error={error.message} />}
               {questionFields.map((question, questionIndex) => (
                 <div
                   key={question.id}
@@ -309,14 +310,15 @@ export default function BulkQuestionForm({
                                 type="button"
                                 className="h-10 px-4 text-sm bg-emerald-500 text-white"
                                 disabled={
-                                  form.getValues(
-                                    `questions.${questionIndex}.answers`,
-                                  ).length >= 4
+                                  (form.watch(`questions.${questionIndex}.answers`)
+                                    ?.length ?? 0) >= 4
                                 }
                                 onClick={() => {
-                                  const newShowAddInput = [...showAddInput];
-                                  newShowAddInput[questionIndex] = true;
-                                  setShowAddInput(newShowAddInput);
+                                  setShowAddInput((prev) => {
+                                    const next = [...prev];
+                                    next[questionIndex] = true;
+                                    return next;
+                                  });
                                 }}
                               >
                                 <Plus className="mr-2 w-4 h-4" />
@@ -328,10 +330,10 @@ export default function BulkQuestionForm({
 
                         <tbody>
                           {form
-                            .getValues(`questions.${questionIndex}.answers`)
-                            .map((answer, answerIndex) => (
+                            .watch(`questions.${questionIndex}.answers`)
+                            ?.map((answer, answerIndex) => (
                               <Controller
-                                key={answerIndex}
+                                key={`${question.id}-answer-${answerIndex}`}
                                 name={`questions.${questionIndex}.answers.${answerIndex}`}
                                 control={form.control}
                                 render={({ field }) => (
@@ -383,7 +385,7 @@ export default function BulkQuestionForm({
                                               answerIndex,
                                             )
                                           }
-                                          className="px-3 py-2 cursor-pointer hover:bg-gray-50 rounded min-h-[40px] flex items-center"
+                                          className="px-3 py-2 cursor-pointer hover:bg-gray-50 rounded min-h-10 flex items-center"
                                         >
                                           {field.value?.text || (
                                             <span className="text-gray-400">
@@ -425,73 +427,64 @@ export default function BulkQuestionForm({
                             ))}
 
                           {/* Add New Answer Row */}
-                          {form.getValues(`questions.${questionIndex}.answers`)
-                            .length < 4 && (
-                            <>
-                              <tr className="bg-emerald-50 border-t">
-                                <td className="">
-                                  <Button
-                                    type="button"
-                                    onClick={() => {
-                                      const newShowAddInput = [...showAddInput];
-                                      newShowAddInput[questionIndex] = false;
-                                      setShowAddInput(newShowAddInput);
-                                    }}
-                                    className="bg-transparent border border-gray-300 w-7 h-7 rounded-full text-gray-800"
-                                  >
-                                    <X size={16} />
-                                  </Button>
-                                </td>
+                          {showAddInput[questionIndex] &&
+                            (form.watch(`questions.${questionIndex}.answers`)
+                              ?.length ?? 0) < 4 && (
+                            <tr className="bg-emerald-50 border-t">
+                              <td>
+                                <Button
+                                  type="button"
+                                  onClick={() => {
+                                    setShowAddInput((prev) => {
+                                      const next = [...prev];
+                                      next[questionIndex] = false;
+                                      return next;
+                                    });
+                                    setAnswerDrafts((prev) => ({
+                                      ...prev,
+                                      [questionIndex]: "",
+                                    }));
+                                  }}
+                                  className="bg-transparent border border-gray-300 w-7 h-7 rounded-full text-gray-800"
+                                >
+                                  <X size={16} />
+                                </Button>
+                              </td>
 
-                                <td className="p-2">
-                                  <Input
-                                    placeholder="Enter answer body"
-                                    className="bg-white border border-emerald-600"
-                                    onKeyDown={(e) => {
-                                      if (
-                                        e.key === "Enter" &&
-                                        e.currentTarget.value.trim()
-                                      ) {
-                                        handleAddAnswer(
-                                          questionIndex,
-                                          e.currentTarget.value.trim(),
-                                        );
-                                      }
-                                    }}
-                                    ref={(el) => {
-                                      if (el && !el.dataset.initialized) {
-                                        el.dataset.initialized = "true";
-                                        el.focus();
-                                      }
-                                    }}
-                                  />
-                                </td>
+                              <td className="p-2">
+                                <Input
+                                  placeholder="Enter answer body"
+                                  className="bg-white border border-emerald-600"
+                                  value={answerDrafts[questionIndex] ?? ""}
+                                  onChange={(e) =>
+                                    setAnswerDrafts((prev) => ({
+                                      ...prev,
+                                      [questionIndex]: e.target.value,
+                                    }))
+                                  }
+                                  onKeyDown={(e) => {
+                                    if (
+                                      e.key === "Enter" &&
+                                      answerDrafts[questionIndex]?.trim()
+                                    ) {
+                                      e.preventDefault();
+                                      handleAddAnswer(questionIndex);
+                                    }
+                                  }}
+                                />
+                              </td>
 
-                                <td className="p-2 text-right">
-                                  <Button
-                                    type="button"
-                                    className="h-10 px-4 text-sm bg-emerald-500 text-white"
-                                    onClick={() => {
-                                      const inputs = document.querySelectorAll(
-                                        `input[placeholder="Enter answer body"]`,
-                                      );
-                                      const lastInput = inputs[
-                                        inputs.length - 1
-                                      ] as HTMLInputElement;
-                                      if (lastInput?.value.trim()) {
-                                        handleAddAnswer(
-                                          questionIndex,
-                                          lastInput.value.trim(),
-                                        );
-                                      }
-                                    }}
-                                  >
-                                    <Plus className="mr-2 w-4 h-4" />
-                                    Add
-                                  </Button>
-                                </td>
-                              </tr>
-                            </>
+                              <td className="p-2 text-right">
+                                <Button
+                                  type="button"
+                                  className="h-10 px-4 text-sm bg-emerald-500 text-white"
+                                  onClick={() => handleAddAnswer(questionIndex)}
+                                >
+                                  <Plus className="mr-2 w-4 h-4" />
+                                  Add
+                                </Button>
+                              </td>
+                            </tr>
                           )}
                         </tbody>
                       </table>

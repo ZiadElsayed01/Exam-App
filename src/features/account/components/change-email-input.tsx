@@ -67,7 +67,7 @@ export default function ChangeEmailInput({
                 id="newEmail"
                 ref={emailInputRef}
                 aria-invalid={fieldState.invalid}
-                type="string"
+                type="email"
                 autoComplete="email"
                 placeholder="user@example.com"
                 className={fieldState.invalid ? "border-destructive" : ""}

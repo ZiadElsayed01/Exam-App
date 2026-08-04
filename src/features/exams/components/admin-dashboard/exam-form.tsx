@@ -20,6 +20,7 @@ import useDiplomaDropdown from "@/features/diplomas/hooks/use-diploma-dropdown";
 import { useMemo } from "react";
 import HeaderSubTitle from "@/shared/components/global/header-sub-title";
 import { slugify } from "@/shared/lib/utils/utils";
+import FallbackError from "@/shared/components/global/fallback-error";
 
 interface ExamFormProps {
   exam?: IExam;
@@ -32,8 +33,8 @@ export default function ExamForm({
   isEdit = false,
   examId,
 }: ExamFormProps) {
-  const { mutate: createExam } = useCreateExam();
-  const { mutate: updateExam } = useUpdateExam(examId!);
+  const { mutate: createExam, error: createError } = useCreateExam();
+  const { mutate: updateExam, error: updateError } = useUpdateExam(examId!);
   const router = useRouter();
 
   const {
@@ -98,11 +99,14 @@ export default function ExamForm({
         />
 
         <div className="p-6">
+          {(createError || updateError) && (
+            <div className="mb-4">
+              <FallbackError error={(createError || updateError)?.message || "Something went wrong"} />
+            </div>
+          )}
           <div className="bg-primary p-4 text-white">Exam Information</div>
 
           <div className="p-4 bg-white gap-4 flex flex-col">
-            {/* Image */}
-
             <div className="grid grid-cols-2 gap-4">
               {/* Title */}
               <FieldGroup>

@@ -61,30 +61,32 @@ export async function getExamsAction(req: NextRequest) {
   return payload;
 }
 
-export async function getExamByIdAction(
-  id: string,
-): Promise< IExam | undefined> {
+export async function getExamByIdAction(id: string): Promise<IExam> {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {} as IExam;
+  }
 
   const response = await fetch(`${API_URL}/exams/${id}`, {
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 
-  const payload: IApiResponse<IExam> = await response.json();
+  const payload: IApiResponse<{ exam: IExam }> = await response.json();
 
   if (!payload.status || !payload.payload) {
-    return undefined;
+    return {} as IExam;
   }
 
-  return payload.payload;
+  return payload.payload.exam;
 }
 
 export async function deleteExamAction(id: string) {
   const token = await getNextAuthToken();
 
-  if (!token) {
+  if (!token?.token) {
     return {
       status: false,
       message: "No token provided",
@@ -106,10 +108,19 @@ export async function deleteExamAction(id: string) {
 
 export async function createExamAction(values: ExamFormData) {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
   const response = await fetch(`${API_URL}/exams`, {
     method: "POST",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
       ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
@@ -122,16 +133,48 @@ export async function createExamAction(values: ExamFormData) {
 
 export async function updateExamAction(examId: string, values: ExamFormData) {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
   const response = await fetch(`${API_URL}/exams/${examId}`, {
     method: "PUT",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
       ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
   });
 
   const payload: IApiResponse<IExam> = await response.json();
+
+  return payload;
+}
+
+export async function immutableExamAction(examId: string) {
+  const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
+  const response = await fetch(`${API_URL}/admin/exams/${examId}/immutable`, {
+    method: "PATCH",
+    headers: {
+      ...HEADERS.AUTH(token.token),
+    },
+  });
+
+  const payload: IApiResponse<void> = await response.json();
 
   return payload;
 }

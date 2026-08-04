@@ -38,7 +38,13 @@ export const userInfoSchema = z
 // Password step schema
 export const passwordSchema = z
   .object({
-    password: z.string("Invalid password").nonempty("Password is required"),
+    password: z
+      .string("Invalid password")
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must include an uppercase letter")
+      .regex(/[a-z]/, "Password must include a lowercase letter")
+      .regex(/[0-9]/, "Password must include a number")
+      .nonempty("Password is required"),
     confirmPassword: z.string().nonempty("Confirm password is required"),
   })
   .strict()
@@ -52,7 +58,13 @@ export const registerSchema = z
   .object({
     username: z.string("Invalid username").nonempty("Username is required"),
     email: z.string().email("Invalid email format"),
-    password: z.string("Invalid password").nonempty("Password is required"),
+    password: z
+      .string("Invalid password")
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must include an uppercase letter")
+      .regex(/[a-z]/, "Password must include a lowercase letter")
+      .regex(/[0-9]/, "Password must include a number")
+      .nonempty("Password is required"),
     confirmPassword: z.string().nonempty("Confirm password is required"),
     firstName: z
       .string("Invalid first name")

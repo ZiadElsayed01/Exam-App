@@ -45,8 +45,6 @@ export default function ImageField() {
 
   const previousImageValue = useRef(imageValue);
 
-  console.log("imageValue", imageValue?.split("/").pop());
-
   useLayoutEffect(() => {
     if (imageValue !== previousImageValue.current) {
       setTimeout(() => setUploadedImageUrl(imageValue), 0);
@@ -198,7 +196,7 @@ export default function ImageField() {
                     Drop an image here or{" "}
                     <button
                       type="button"
-                      className="text-primary"
+                      className="text-primary cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleClick();

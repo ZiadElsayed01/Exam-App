@@ -1,7 +1,7 @@
 "use client";
 
-import { EllipsisVertical, Bolt, LogOut, UserRound } from "lucide-react";
-import { useState } from "react";
+import { EllipsisVertical, LogOut, UserRound } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
@@ -11,6 +11,18 @@ export default function SideBarDropmenu({
   isAdminSuper: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const dropDownItems = [
     {
@@ -19,16 +31,10 @@ export default function SideBarDropmenu({
       icon: <UserRound className="w-4.5 h-4.5 text-gray-500" />,
       show: true,
     },
-    {
-      label: "Dashboard",
-      href: "/",
-      icon: <Bolt className="w-4.5 h-4.5 text-gray-500" />,
-      show: isAdminSuper,
-    },
   ];
 
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <EllipsisVertical
         className={`${isAdminSuper ? "text-white" : "text-gray-500"} cursor-pointer`}
         onClick={() => setIsOpen(!isOpen)}

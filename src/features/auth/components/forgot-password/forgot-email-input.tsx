@@ -12,7 +12,6 @@ import { EmailFormData, emailSchema } from "../../schemas/register.schema";
 import { ChevronRight, Loader2 } from "lucide-react";
 import FallbackError from "@/shared/components/global/fallback-error";
 import Link from "next/link";
-// import { useForgotPassword } from "../../hooks/use-forgot-password";
 import { useForm } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import useForgotPassword from "../../hooks/forgot-password/use-forgot-password";
@@ -78,7 +77,7 @@ export default function ForgotEmailInput({
                   {...field}
                   id="email"
                   aria-invalid={fieldState.invalid}
-                  type="string"
+                  type="email"
                   autoComplete="email"
                   placeholder="user@example.com"
                   className={fieldState.invalid ? "border-destructive" : ""}

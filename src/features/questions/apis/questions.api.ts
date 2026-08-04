@@ -21,7 +21,7 @@ export async function getExamQustionsAction(
 ): Promise<{ questions: IQuestion[] }> {
   const token = await getNextAuthToken();
 
-  if (!token) {
+  if (!token?.token) {
     return { questions: [] };
   }
 
@@ -54,9 +54,13 @@ export async function getExamQustionsAction(
 export async function getQuestionById(questionId: string) {
   const token = await getNextAuthToken();
 
+  if (!token?.token) {
+    return undefined;
+  }
+
   const response = await fetch(`${API_URL}/questions/${questionId}`, {
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 
@@ -75,10 +79,18 @@ export async function createBulkQuestionsAction(
 ) {
   const token = await getNextAuthToken();
 
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<void>;
+  }
+
   const response = await fetch(`${API_URL}/questions/exam/${examId}/bulk`, {
     method: "POST",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
       ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
@@ -92,10 +104,18 @@ export async function createBulkQuestionsAction(
 export async function createQuestionAction(values: QuestionFormData) {
   const token = await getNextAuthToken();
 
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<void>;
+  }
+
   const response = await fetch(`${API_URL}/questions`, {
     method: "POST",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
       ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
@@ -113,10 +133,18 @@ export async function updateQuestionAction(
   const token = await getNextAuthToken();
   const { examId, ...questionData } = values;
 
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<void>;
+  }
+
   const response = await fetch(`${API_URL}/questions/${questionId}`, {
     method: "PUT",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
       ...HEADERS.JSON,
     },
     body: JSON.stringify(questionData),
@@ -130,12 +158,46 @@ export async function updateQuestionAction(
 export async function deleteQuestionAction(questionId: string) {
   const token = await getNextAuthToken();
 
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<void>;
+  }
+
   const response = await fetch(`${API_URL}/questions/${questionId}`, {
     method: "DELETE",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
+
+  const payload: IApiResponse<void> = await response.json();
+
+  return payload;
+}
+
+export async function immutableQuestionAction(questionId: string) {
+  const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<void>;
+  }
+
+  const response = await fetch(
+    `${API_URL}/admin/questions/${questionId}/immutable`,
+    {
+      method: "PATCH",
+      headers: {
+        ...HEADERS.AUTH(token.token),
+      },
+    },
+  );
 
   const payload: IApiResponse<void> = await response.json();
 

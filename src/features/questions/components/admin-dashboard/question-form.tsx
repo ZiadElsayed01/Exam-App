@@ -29,6 +29,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Check, CheckCheck, Plus, Trash2, X } from "lucide-react";
 import { slugify } from "@/shared/lib/utils/utils";
 import BulkQuestionForm from "./bulk-question-form";
+import FallbackError from "@/shared/components/global/fallback-error";
 
 interface QuestionFormProps {
   question?: IQuestion;
@@ -36,6 +37,7 @@ interface QuestionFormProps {
   questionId?: string;
   preselectedExamId?: string;
   preselectedExamTitle?: string;
+  setBulkMode?: (value: boolean) => void;
 }
 
 export default function QuestionForm({
@@ -48,8 +50,8 @@ export default function QuestionForm({
   const [open, setOpen] = useState(false);
   const [bulkMode, setBulkMode] = useState(false);
   const [newAnswerText, setNewAnswerText] = useState("");
-  const { mutate: createQuestion } = useCreateQuestion();
-  const { mutate: updateQuestion } = useUpdateQuestion(questionId!);
+  const { mutate: createQuestion, error: createError } = useCreateQuestion();
+  const { mutate: updateQuestion, error: updateError } = useUpdateQuestion(questionId!);
   const router = useRouter();
 
   const { data: examData, hasNextPage, fetchNextPage } = useExamDropdown();
@@ -85,6 +87,7 @@ export default function QuestionForm({
       <BulkQuestionForm
         preselectedExamId={preselectedExamId}
         preselectedExamTitle={preselectedExamTitle}
+        setBulkMode={setBulkMode}
       />
     );
   }
@@ -138,10 +141,16 @@ export default function QuestionForm({
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <SaveCancelButtons
           bulkMode={bulkMode}
-          onBulkModeToggle={() => setBulkMode(!bulkMode)}
+          showBulkMode={true}
+          onBulkModeToggle={setBulkMode}
         />
 
         <div className="p-6">
+          {(createError || updateError) && (
+            <div className="mb-4">
+              <FallbackError error={(createError || updateError)?.message || "Something went wrong"} />
+            </div>
+          )}
           <div className="bg-primary p-4 text-white">Question Information</div>
           <div className="p-4 bg-white gap-4 flex flex-col">
             {/* Exam Select */}
@@ -182,7 +191,7 @@ export default function QuestionForm({
                       {...field}
                       id="text"
                       aria-invalid={fieldState.invalid}
-                      className={`min-h-[100px]
+                      className={`min-h-25
                         ${fieldState.invalid ? "border-destructive" : ""}
                       `}
                     />

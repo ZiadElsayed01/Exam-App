@@ -20,7 +20,7 @@ export default function useLogin() {
     },
     onSuccess: () => {
       const callbackUrl =
-        new URLSearchParams(location.search).get("callbackUrl") || "/";
+        new URLSearchParams(location.search).get("callbackUrl") || "/diplomas";
       location.href = callbackUrl;
     },
   });

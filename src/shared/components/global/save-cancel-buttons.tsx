@@ -8,7 +8,8 @@ interface ISaveCancelButtonsProps {
   title?: string;
   subTitle?: React.ReactNode;
   bulkMode?: boolean;
-  onBulkModeToggle?: () => void;
+  showBulkMode?: boolean;
+  onBulkModeToggle?: (value: boolean) => void;
 }
 
 export default function SaveCancelButtons({
@@ -16,27 +17,34 @@ export default function SaveCancelButtons({
   title,
   subTitle,
   bulkMode,
+  showBulkMode = false,
   onBulkModeToggle,
 }: ISaveCancelButtonsProps) {
   const router = useRouter();
   return (
     <div
-      className={`px-6 py-1.5 border-t border-gray-100 flex items-center bg-white ${isEdit ? "justify-between" : " justify-between"}`}
+      className={`px-6 py-1.5 border-t border-gray-100 flex items-center bg-white justify-between`}
     >
-      {bulkMode ? (
-        <div>
-          <h1 className="text-lg font-semibold">Bulk Add Mode</h1>
-        </div>
-      ) : (
-        <Button
-          type="button"
-          onClick={onBulkModeToggle}
-          className="h-9 px-4 text-sm bg-blue-500 text-white flex items-center gap-2"
-        >
-          <Layers className="w-4 h-4" />
-          Bulk Add Mode
-        </Button>
-      )}
+      {showBulkMode &&
+        (bulkMode ? (
+          <Button
+            type="button"
+            onClick={() => onBulkModeToggle?.(false)}
+            className="h-9 px-4 text-sm bg-blue-500 text-white flex items-center gap-2"
+          >
+            <Layers className="w-4 h-4" />
+            Bulk Add Mode
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={() => onBulkModeToggle?.(true)}
+            className="h-9 px-4 text-sm bg-gray-200 text-gray-800 flex items-center gap-2"
+          >
+            <Layers className="w-4 h-4" />
+            Bulk Add Mode
+          </Button>
+        ))}
 
       {isEdit && (
         <div>
@@ -45,7 +53,7 @@ export default function SaveCancelButtons({
         </div>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 ml-auto">
         <Button
           onClick={() => router.back()}
           className="h-9 w-25 text-sm bg-gray-200 text-gray-800"

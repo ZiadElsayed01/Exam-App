@@ -67,9 +67,13 @@ export async function getDiplomaByIdAction(
 ): Promise<IDiploma | undefined> {
   const token = await getNextAuthToken();
 
+  if (!token?.token) {
+    return undefined;
+  }
+
   const response = await fetch(`${API_URL}/diplomas/${diplomaId}`, {
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 
@@ -83,10 +87,19 @@ export async function getDiplomaByIdAction(
 
 export async function createDiplomaAction(values: DiplomaFormData) {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
   const response = await fetch(`${API_URL}/diplomas`, {
     method: "POST",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
       ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
@@ -102,10 +115,19 @@ export async function updateDiplomaAction(
   values: DiplomaFormData,
 ) {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
   const response = await fetch(`${API_URL}/diplomas/${diplomaId}`, {
     method: "PUT",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
       ...HEADERS.JSON,
     },
     body: JSON.stringify(values),
@@ -118,14 +140,49 @@ export async function updateDiplomaAction(
 
 export async function deleteDiplomaAction(diplomaId: string) {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
   const response = await fetch(`${API_URL}/diplomas/${diplomaId}`, {
     method: "DELETE",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 
   const payload: IApiResponse<IDiploma> = await response.json();
+
+  return payload;
+}
+
+export async function immutableDiplomaAction(diplomaId: string) {
+  const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
+  const response = await fetch(
+    `${API_URL}/admin/diplomas/${diplomaId}/immutable`,
+    {
+      method: "PATCH",
+      headers: {
+        ...HEADERS.AUTH(token.token),
+      },
+    },
+  );
+
+  const payload: IApiResponse<void> = await response.json();
 
   return payload;
 }

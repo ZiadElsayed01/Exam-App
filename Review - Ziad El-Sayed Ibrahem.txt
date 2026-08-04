@@ -1,0 +1,191 @@
+Review - Ziad El-Sayed Ibrahem
+
+Score: 200 / 233 (86%)  FINAL
+
+This is one of the most complete builds in the cohort - every screen in the brief is actually built and wired. The thing holding it back is a single production bug that breaks a big chunk of the deployed app, plus a password-change security gap.
+
+What's good
+
+- Full coverage. Auth, register (4 steps), forgot/reset, student dashboard, exam-taking, results, account, and the entire admin area (diplomas/exams/questions/audit - list, view, add, edit, bulk) are all built.
+- OTP step is excellent. Real 60s resend cooldown via localStorage, submit disabled while pending, errors surfaced. otp-verification.tsx even gets reused for the change-email flow.
+- Clean feature-based structure. features/<domain>/{apis,schemas,hooks,components,types,constants} applied consistently, with (auth)/(dashboard) route groups and @admin/@user parallel routes for the role-based shell.
+- Strong shared primitives. Header, Pagination, SortDropdown, ImageField (drag-drop + progress), UserInfoForm (shared between register and account via a mode prop) - good reuse, little copy-paste.
+- Exam-taking logic is solid. useFieldArray keeps answers across steps, the countdown auto-submits with a double-submit guard, and it blocks submit while questions are unanswered.
+- Admin lists are well done. URL-synced filters, server pagination, working sort, infinite-scroll dropdowns (diploma/exam/user selects).
+
+Comments
+
+- Token cookie name breaks the app in production
+
+This is the big one. getNextAuthToken() reads the cookie next-auth.session-token, but on HTTPS (Vercel) NextAuth uses the __Secure- prefix. So in production the token is always null, and the token!.token non-null assertions then throw - that's the ""A server error occurred"" you saw on the exam page. It works locally only because dev uses the non-secure cookie name.
+
+src/shared/lib/utils/auth.utils.ts:6
+
+Bad - only works in dev:
+cookieStore.get(""next-auth.session-token"")?.value;
+
+Good - honor the secure prefix in production:
+const isProd = process.env.NODE_ENV === ""production"";
+const name = isProd ? ""__Secure-next-auth.session-token"" : ""next-auth.session-token"";
+cookieStore.get(name)?.value;
+
+This single bug takes down every page/action that uses getNextAuthToken (33 call sites): exam-taking, results, all detail/view pages, all edit forms, profile prefill, and every create/update/delete. Your list pages survive because they go through getToken({ req }), which handles the cookie name for you - so prefer that everywhere, or better, centralize token reading in one helper.
+
+---
+
+- Password change doesn't end the session
+
+After a successful password change you only toast and form.reset(). The old session keeps working, which is a security problem - a changed password should invalidate the current session.
+
+src/features/account/components/update-password-form.tsx:35
+
+onSuccess: () => {
+  toast.success(""Your password has been updated."");
+  // force re-auth
+  signOut({ callbackUrl: ""/login"" });
+}
+
+---
+
+- Don't use token! - guard it
+
+You have 21 token!.token non-null assertions. The moment the token is missing (exactly the prod case above) these throw and crash the server component instead of returning a clean error. Read the token once, check it, and return an error response if it's gone - like you already do in getDiplomasAction.
+
+src/features/diplomas/apis/diploma.api.ts:73, src/features/exams/apis/exams.api.ts:67, and others.
+
+---
+
+- Admin mutations swallow API errors
+
+The diploma/exam/question forms call the mutation but never render its error. If the API rejects a create/update, the user sees nothing. You already built FallbackError and use it in the auth forms - wire it into these too.
+
+src/features/diplomas/components/admin-dashboard/diploma-form.tsx:29, exam-form.tsx:35, question-form.tsx:51
+
+---
+
+- SUPER_ADMIN sees the wrong shell
+
+Your sidebar treats both ADMIN and SUPER_ADMIN as admin (ADMIN_SUPER.includes(...)), but the layouts only match the exact string ""ADMIN"". So a SUPER_ADMIN gets the admin sidebar but the user content - and the admin pages render null. Use the same ADMIN_SUPER check in both layouts so roles are handled consistently.
+
+src/app/(dashboard)/@admin/layout.tsx:12, src/app/(dashboard)/@user/layout.tsx:12
+
+Bad:  const isAdmin = session?.user.role === USER_ROLES.ADMIN;
+Good: const isAdmin = USER_ROLES.ADMIN_SUPER.includes(session?.user.role);
+
+---
+
+- Profile update leaves stale data on screen
+
+The profile page is fetched server-side, but after a successful update you don't refresh it, so the sidebar name/avatar and the form's own values stay stale until a hard reload. Call router.refresh() in onSuccess (or move the read into React Query and invalidate it).
+
+src/features/account/components/update-profile-form.tsx:44
+
+---
+
+- No password strength rules
+
+Register, reset, and change-password only check nonempty + confirm-match. Add real strength rules (min length, upper/lower/number) to the Zod schemas so weak passwords are caught client-side.
+
+src/features/auth/schemas/register.schema.ts:39, reset-password.schema.ts:3, update-account.schema.ts:10
+
+---
+
+- Remove console.log before pushing
+
+Four left in the code, including a debug one that runs on every render.
+
+src/shared/components/global/image-field.tsx:48, diploma-header.tsx:32, exam-header.tsx:34, question-header.tsx:33
+
+---
+
+- Don't build Tailwind classes from variables
+
+text-${user.role === ""ADMIN"" ? ""white"" : ""primary""} won't reliably generate the class - Tailwind can't see it at build time. Use the cn utility with full class names.
+
+src/shared/components/global/side-bar/side-bar-footer.tsx:33
+
+className={cn(user.role === ""ADMIN"" ? ""text-white"" : ""text-primary"", ""font-medium"")}
+
+---
+
+- Bulk form reads inputs from the DOM
+
+The bulk-question form pulls answer text with document.querySelectorAll('input[placeholder=""Enter answer body""]') and grabs the ""last"" one. That's fragile. Use a nested useFieldArray for answers (like you did for questions) so the values live in the form, not the DOM. Also avoid key={index} on the answer rows.
+
+src/features/questions/components/admin-dashboard/bulk-question-form.tsx:150
+
+---
+
+- Use design tokens instead of raw colors
+
+Tokens are defined nicely in globals.css, but components reach for text-gray-800, bg-red-50, text-red-600, outline-blue-100 everywhere. Prefer text-foreground, text-muted-foreground, bg-destructive/10, text-destructive so a theme change actually propagates. FallbackError is a good place to start.
+
+src/shared/components/global/fallback-error.tsx:5
+
+---
+
+- Quick fixes
+
+- Empty README. Add setup steps, scripts, stack, and env vars (NEXT_PUBLIC_API_BASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL). README.md
+- type=""string"" on the email inputs isn't valid - use type=""email"". email-input.tsx:90, forgot-email-input.tsx:81
+- Wrong edit link. The question view's edit button points to /exams/edit-exam/... instead of the edit-question route. question-body/question.../page.tsx:25
+- Redirect target. After creating/updating a diploma you push to /; for admin that should be /diplomas. diploma-form.tsx:45
+- Devtools in prod. TanStackDevtools ships in the production bundle - gate it behind NODE_ENV. providers.tsx
+- Commented-out code + folder typo. Remove dead imports, and prodivers/ / react-query.prodiver.tsx are misspelled.
+- User dropdown has no click-outside-to-close. side-bar-dropmenu.tsx
+
+What's not built at all
+
+Almost nothing is missing - that's genuinely impressive. The only gap in the brief:
+
+- Resend on the ""reset link sent"" screen (Forgot Password 2) - there's a back button but no way to resend the email.
+
+Scores
+
+#   Section                                Score
+1   Repo Setup                             1/2
+2   Installation                           5/5
+3   Overall Structure                      9/10
+4   Design System                          8/10
+5   NextAuth Setup                         9/10
+6   Proxy                                  3/5
+7   Auth Layout                            5/5
+8   Login                                  6/6
+9   Register 1 - Email                     3/3
+10  Register 2 - Verify OTP                10/10
+11  Register 3 - Complete Profile          4/4
+12  Register 4 - Create Password           3/3
+13  Forgot Password 1 - Email              3/3
+14  Forgot Password 2 - Email Sent         1/2
+15  Forgot Password 3 - Reset Password     4/4
+16  Dashboard Layout (student)             8/10
+17  Diplomas (infinite scroll)             4/5
+18  Exams (infinite scroll)                4/5
+19  Questions (multistep)                  9/10
+20  Questions (results)                    4/5
+21  Account (layout)                       3/3
+22  Account (profile)                      8/10
+23  Account (update password)              3/5
+24  Dashboard Layout (admin)               4/5
+25  Diploma List                           10/10
+26  Diploma View                           4/5
+27  Diploma Add/Edit                       5/7
+28  Exam List                              9/10
+29  Exam View                              6/7
+30  Exam Add/Edit                          6/7
+31  Question View                          2/3
+32  Question Add/Edit                      9/10
+33  Question Add Bulk                      8/10
+34  Audit Log List                         8/9
+35  Audit Log View                         4/5
+    Base                                   192/223
+    Bonus                                  8/10
+    Total                                  200/233
+
+---
+Bonus 8/10:
+- Sort 5/5
+- Deployment 1/3
+- Additional 2/2
+
+Deadline: Not missed - last commit 1 May 2026 (deadline 1 May 2026).

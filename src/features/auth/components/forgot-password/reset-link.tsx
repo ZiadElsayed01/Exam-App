@@ -1,4 +1,8 @@
+import { Button } from "@/shared/components/ui/button";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import useForgotPassword from "../../hooks/forgot-password/use-forgot-password";
 import BackButton from "./back-button";
 
 interface ResetLinkProps {
@@ -7,6 +11,19 @@ interface ResetLinkProps {
 }
 
 export default function ResetLink({ email, setStep }: ResetLinkProps) {
+  const { mutate: forgotPassword, isPending } = useForgotPassword();
+  const [isResending, setIsResending] = useState(false);
+
+  const handleResend = () => {
+    setIsResending(true);
+    forgotPassword(
+      { email },
+      {
+        onSettled: () => setIsResending(false),
+      },
+    );
+  };
+
   return (
     <>
       <BackButton setStep={setStep} />
@@ -31,6 +48,20 @@ export default function ResetLink({ email, setStep }: ResetLinkProps) {
             junk folder.
           </p>
         </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="mt-6"
+          onClick={handleResend}
+          disabled={isPending || isResending}
+        >
+          {isPending || isResending ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            "Resend link"
+          )}
+        </Button>
 
         <p className="text-sm font-medium text-gray-500 mt-16">
           Don&apos;t have an account?

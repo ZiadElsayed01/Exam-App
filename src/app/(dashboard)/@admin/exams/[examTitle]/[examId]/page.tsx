@@ -31,7 +31,7 @@ export default async function ExamPage({
     notFound();
   }
 
-  const examData = await getExamByIdAction(examId);
+  const exam = await getExamByIdAction(examId);
 
   const searchParamsData = await searchParams;
 
@@ -47,34 +47,30 @@ export default async function ExamPage({
           : undefined,
   });
 
-  if (!examData) {
-    notFound();
-  }
-
   return (
     <>
       <ExamHeader
-        title={examData.title}
-        editHref={`/exams/edit-exam/${examData.id}`}
-        id={examData.id}
+        title={exam.title}
+        editHref={`/exams/edit-exam/${exam.id}`}
+        id={exam.id}
         subTitle={
           <HeaderSubTitle
-            Title={examData.diploma?.title}
-            Id={examData.diploma?.id}
+            Title={exam.diploma?.title}
+            Id={exam.diploma?.id}
             prefix="Diploma"
-            href={`/diplomas/${slugify(examData.diploma?.title)}/${examData.diploma?.id}`}
+            href={`/diplomas/${slugify(exam.diploma?.title)}/${exam.diploma?.id}`}
           />
         }
       />
 
       <div className="bg-gray-100 p-6 min-h-screen">
-        <ExamBody examData={examData} />
+        <ExamBody examData={exam} />
 
         <div className="mt-6">
           <div className="bg-primary p-2.5 flex justify-between items-center">
             <h2 className="font-semibold text-white">Exam Questions</h2>
             <Link
-              href={`/exams/create-new-question/${examData.id}`}
+              href={`/exams/create-new-question/${exam.id}`}
               className="bg-primary text-white hover:bg-primary/90"
             >
               + Add Questions

@@ -1,18 +1,16 @@
 import SideBarBody from "./side-bar-body";
 import SideBarFooter from "./side-bar-footer";
-import { USER_ROLES } from "@/features/auth/constants/user.constants";
-import { authOptions } from "@/auth";
-import { getServerSession } from "next-auth";
+import { USER_ROLES, isAdminRole } from "@/features/auth/constants/user.constants";
 import ElevateLogo from "../../../../../public/ElevateLogo.png";
 import WhiteElevateLogo from "../../../../../public/WhiteElevateLogo.png";
 import ExamAppLogo from "../exam-app-logo";
 import Image from "next/image";
+import { getProfileAction } from "@/features/account/apis/account.api";
 
 export default async function SideBar() {
-  const session = await getServerSession(authOptions);
-  const isAdminSuper = USER_ROLES.ADMIN_SUPER.includes(
-    session?.user.role as "ADMIN" | "SUPER_ADMIN",
-  );
+  const user = await getProfileAction();
+
+  const isAdminSuper = isAdminRole(user?.role);
 
   return (
     <>
@@ -42,7 +40,7 @@ export default async function SideBar() {
 
         {/* User Info */}
         <div className="mt-auto w-70.5">
-          <SideBarFooter isAdminSuper={isAdminSuper} />
+          <SideBarFooter isAdminSuper={isAdminSuper} user={user!} />
         </div>
       </aside>
     </>

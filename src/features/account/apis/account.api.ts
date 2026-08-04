@@ -16,9 +16,13 @@ export const getProfileAction = async (): Promise<IUser | null> => {
   const jwt = await getNextAuthToken();
   const token = jwt?.token;
 
+  if (!token) {
+    return null;
+  }
+
   const response = await fetch(`${API_BASE_URL}/users/profile`, {
     headers: {
-      ...HEADERS.AUTH(token!),
+      ...HEADERS.AUTH(token),
     },
   });
 
@@ -41,11 +45,19 @@ export const updateProfileAction = async (
   const jwt = await getNextAuthToken();
   const token = jwt?.token;
 
+  if (!token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<IUser>;
+  }
+
   const response = await fetch(`${API_BASE_URL}/users/profile`, {
     method: "PATCH",
     headers: {
       ...HEADERS.JSON,
-      ...HEADERS.AUTH(token!),
+      ...HEADERS.AUTH(token),
     },
     body: JSON.stringify(userData),
   });
@@ -63,6 +75,14 @@ export const deleteProfileAction = async (): Promise<
 > => {
   const jwt = await getNextAuthToken();
   const token = jwt?.token;
+
+  if (!token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<undefined>;
+  }
 
   const response = await fetch(`${API_BASE_URL}/users/account`, {
     method: "DELETE",
@@ -85,11 +105,19 @@ export const updatePasswordAction = async (
   const jwt = await getNextAuthToken();
   const token = jwt?.token;
 
+  if (!token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<undefined>;
+  }
+
   const response = await fetch(`${API_BASE_URL}/users/change-password`, {
     method: "POST",
     headers: {
       ...HEADERS.JSON,
-      ...HEADERS.AUTH(token!),
+      ...HEADERS.AUTH(token),
     },
     body: JSON.stringify(values),
   });
@@ -106,11 +134,19 @@ export const requestEmailChange = async (values: ChangeEmailFormData) => {
   const jwt = await getNextAuthToken();
   const token = jwt?.token;
 
+  if (!token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<undefined>;
+  }
+
   const response = await fetch(`${API_BASE_URL}/users/email/request`, {
     method: "POST",
     headers: {
       ...HEADERS.JSON,
-      ...HEADERS.AUTH(token!),
+      ...HEADERS.AUTH(token),
     },
     body: JSON.stringify(values),
   });
@@ -127,11 +163,19 @@ export const confirmEmailChange = async (values: ConfirmEmailFormData) => {
   const jwt = await getNextAuthToken();
   const token = jwt?.token;
 
+  if (!token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IApiResponse<undefined>;
+  }
+
   const response = await fetch(`${API_BASE_URL}/users/email/confirm`, {
     method: "POST",
     headers: {
       ...HEADERS.JSON,
-      ...HEADERS.AUTH(token!),
+      ...HEADERS.AUTH(token),
     },
     body: JSON.stringify(values),
   });

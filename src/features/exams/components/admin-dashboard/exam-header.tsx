@@ -1,7 +1,7 @@
 "use client";
 import SubHeader from "@/shared/components/global/sub-header";
 import { useRouter } from "next/navigation";
-import { useDeleteExam } from "../../hooks/use-exam";
+import { useDeleteExam, useImmutableExam } from "../../hooks/use-exam";
 import { toast } from "sonner";
 
 interface ExamHeaderProps {
@@ -19,6 +19,7 @@ export default function ExamHeader({
 }: ExamHeaderProps) {
   const router = useRouter();
   const { mutate: deleteExam } = useDeleteExam(id);
+  const { mutate: immutableExam } = useImmutableExam(id);
 
   const handleDeleteExam = () => {
     deleteExam(undefined, {
@@ -30,8 +31,14 @@ export default function ExamHeader({
   };
 
   const handleImmutable = () => {
-    // TODO: Implement immutable functionality
-    console.log("Make exam immutable");
+    immutableExam(undefined, {
+      onSuccess: (payload) => {
+        toast.success(payload.message);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
   };
 
   return (

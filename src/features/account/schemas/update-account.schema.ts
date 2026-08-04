@@ -14,6 +14,10 @@ export const updatePasswordSchema = z
       .nonempty("Current password is required"),
     newPassword: z
       .string("Invalid new password")
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must include an uppercase letter")
+      .regex(/[a-z]/, "Password must include a lowercase letter")
+      .regex(/[0-9]/, "Password must include a number")
       .nonempty("New password is required"),
     confirmPassword: z
       .string("Invalid confirm password")

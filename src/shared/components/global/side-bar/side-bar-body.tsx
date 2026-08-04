@@ -1,50 +1,10 @@
 "use client";
-
-import { BookOpenCheck, GraduationCap, Logs, UserRound } from "lucide-react";
+import {
+  adminLinks,
+  userLinks,
+} from "@/shared/constants/side-bar-links.constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const userLinks = [
-  {
-    id: 1,
-    name: "Diplomas",
-    href: "/",
-    icon: <GraduationCap className="w-6 h-6" />,
-  },
-  {
-    id: 2,
-    name: "Account settings",
-    href: "/account",
-    icon: <UserRound className="w-6 h-6" />,
-  },
-];
-
-const adminLinks = [
-  {
-    id: 1,
-    name: "Diplomas",
-    href: "/diplomas",
-    icon: <GraduationCap className="w-6 h-6" />,
-  },
-  {
-    id: 2,
-    name: "Exams",
-    href: "/exams",
-    icon: <BookOpenCheck className="w-6 h-6" />,
-  },
-  {
-    id: 3,
-    name: "Account settings",
-    href: "/account",
-    icon: <UserRound className="w-6 h-6" />,
-  },
-  {
-    id: 4,
-    name: "Audit Log",
-    href: "/audit-log",
-    icon: <Logs className="w-6 h-6" />,
-  },
-];
 
 interface SideBarBodyProps {
   isAdminSuper: boolean;
@@ -54,12 +14,10 @@ export default function SideBarBody({ isAdminSuper }: SideBarBodyProps) {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    // Home route
     if (href === "/") {
       return pathname === "/";
     }
 
-    // Normal nested routes
     return pathname === href || pathname.startsWith(href + "/");
   };
 
@@ -87,7 +45,7 @@ export default function SideBarBody({ isAdminSuper }: SideBarBodyProps) {
                   }
                 `}
               >
-                {link.icon}
+                <link.icon className="w-6 h-6" />
                 {link.name}
               </Link>
             </li>

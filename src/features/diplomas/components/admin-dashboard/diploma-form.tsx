@@ -14,6 +14,7 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useCreateDiploma, useUpdateDiploma } from "../../hooks/use-diploma";
 import { DiplomaFormData, diplomaSchema } from "../../schemas/diploma.schema";
 import { IDiploma } from "../../types/diploma";
+import FallbackError from "@/shared/components/global/fallback-error";
 
 interface DiplomaFormProps {
   diploma?: IDiploma;
@@ -26,8 +27,8 @@ export default function DiplomaForm({
   isEdit = false,
   diplomaId,
 }: DiplomaFormProps) {
-  const { mutate: createDiploma } = useCreateDiploma();
-  const { mutate: updateDiploma } = useUpdateDiploma(diplomaId!);
+  const { mutate: createDiploma, error: createError } = useCreateDiploma();
+  const { mutate: updateDiploma, error: updateError } = useUpdateDiploma(diplomaId!);
   const router = useRouter();
 
   const form = useForm<DiplomaFormData>({
@@ -43,13 +44,13 @@ export default function DiplomaForm({
     if (isEdit) {
       updateDiploma(data, {
         onSuccess: () => {
-          router.push("/");
+          router.push("/diplomas");
         },
       });
     } else {
       createDiploma(data, {
         onSuccess: () => {
-          router.push("/");
+          router.push("/diplomas");
           form.reset();
         },
       });
@@ -62,6 +63,11 @@ export default function DiplomaForm({
         <SaveCancelButtons isEdit={isEdit} title={diploma?.title} />
 
         <div className="p-6 bg-gray-100 min-h-screen">
+          {(createError || updateError) && (
+            <div className="mb-4">
+              <FallbackError error={(createError || updateError)?.message || "Something went wrong"} />
+            </div>
+          )}
           <div className="bg-primary p-4 text-white">Diploma Information</div>
 
           <div className="p-4 bg-white gap-4 flex flex-col">
@@ -90,6 +96,7 @@ export default function DiplomaForm({
                 )}
               />
             </FieldGroup>
+
             {/* Description */}
             <FieldGroup>
               <Controller

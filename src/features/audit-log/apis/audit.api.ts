@@ -61,10 +61,19 @@ export async function getAuditLogsAction(req: NextRequest) {
 
 export async function deleteAuditLogAction(auditLogId: string) {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
   const response = await fetch(`${API_URL}/admin/audit-logs/${auditLogId}`, {
     method: "DELETE",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 
@@ -75,9 +84,14 @@ export async function deleteAuditLogAction(auditLogId: string) {
 
 export async function getAuditLogByIdAction(auditLogId: string) {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return undefined;
+  }
+
   const response = await fetch(`${API_URL}/admin/audit-logs/${auditLogId}`, {
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 
@@ -92,10 +106,19 @@ export async function getAuditLogByIdAction(auditLogId: string) {
 
 export async function clearAllAuditLogsAction() {
   const token = await getNextAuthToken();
+
+  if (!token?.token) {
+    return {
+      status: false,
+      message: "No token provided",
+      code: 401,
+    } as IErrorResponse;
+  }
+
   const response = await fetch(`${API_URL}/admin/audit-logs`, {
     method: "DELETE",
     headers: {
-      ...HEADERS.AUTH(token!.token),
+      ...HEADERS.AUTH(token.token),
     },
   });
 

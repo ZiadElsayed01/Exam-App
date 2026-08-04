@@ -17,19 +17,24 @@ export default async function QuestionPage({ params }: IQuestionPageProps) {
   const { questionId } = await params;
 
   const question = await getQuestionById(questionId);
+  const examTitle = question?.exam?.title ?? "exam";
+  const examId = question?.examId ?? "";
+  const editHref = question
+    ? `/exams/${slugify(examTitle)}/${examId}/edit-question/${questionId}`
+    : undefined;
 
   return (
     <>
       <QuestionHeader
         title={question?.text}
-        editHref={`/exams/edit-exam/${question?.examId}`}
+        editHref={editHref ?? ""}
         id={questionId}
         subTitle={
           <HeaderSubTitle
-            Title={question?.exam.title}
+            Title={question?.exam?.title}
             Id={question?.examId}
             prefix="Exam"
-            href={`/exams/${slugify(question!.exam.title)}/${question?.examId}`}
+            href={`/exams/${slugify(examTitle)}/${examId}`}
           />
         }
       />
