@@ -95,13 +95,13 @@ export async function getAuditLogByIdAction(auditLogId: string) {
     },
   });
 
-  const data: IApiResponse<IAuditLog> = await response.json();
-
+  const data: IApiResponse<{auditLog: IAuditLog}> = await response.json();
+  console.log(data);
   if (!data.status || !data.payload) {
     return undefined;
   }
 
-  return data.payload;
+  return data.payload.auditLog;
 }
 
 export async function clearAllAuditLogsAction() {

@@ -9,11 +9,12 @@ interface LogHeaderProps {
 }
 
 export function LogHeader({ auditLog }: LogHeaderProps) {
+  console.log(auditLog);
   return (
     <div className="bg-white py-1.5 px-6 border-t border-gray-100 flex items-center justify-between">
       <div>
         <h1 className="text-lg font-semibold font-inter capitalize">
-          {auditLog.entityType} {auditLog.action.toLowerCase()} By{" "}
+          {auditLog.entityType} {auditLog.action?.toLowerCase() || ""} By{" "}
           {auditLog.actorUsername}
         </h1>
 
