@@ -34,6 +34,7 @@ export default function UpdateProfile({ profilePromise }: UpdateProfileProps) {
       email: user?.email,
       username: user?.username,
       profilePhoto: user?.profilePhoto || "",
+      phone: user?.phone || "",
     },
   });
 
@@ -42,6 +43,7 @@ export default function UpdateProfile({ profilePromise }: UpdateProfileProps) {
       firstName: values.firstName,
       lastName: values.lastName,
       profilePhoto: values.profilePhoto,
+      phone: values.phone,
     };
     updateProfile(updatedValues, {
       onSuccess: () => {
