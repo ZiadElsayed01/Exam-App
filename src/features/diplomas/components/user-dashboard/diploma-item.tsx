@@ -31,7 +31,9 @@ export default function DiplomaItem({ diploma }: IDiplomaItemProps) {
         {/* Diploma Content */}
         <div className="space-y-1 z-10 bg-primary/75 text-white backdrop-blur-md p-4 h-24.5 hover:h-69.5 w-full transition-all duration-300 group">
           {/* Diploma Title */}
-          <h2 className="text-xl font-semibold ">{diploma.title}</h2>
+          <h2 className="text-xl font-semibold line-clamp-1">
+            {diploma.title}
+          </h2>
 
           {/* Diploma Description */}
           <p className="text-sm line-clamp-2 group-hover:overflow-auto group-hover:line-clamp-none">
