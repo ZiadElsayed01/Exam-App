@@ -104,7 +104,7 @@ export default function OtpVerification({
         </div>
 
         <p className="text-gray-500 font-geist-mono">
-          Please enter the 6-digits code we have sent to:
+          Please enter the 6-digits code we have sent to - check your spam folder - :{" "}
         </p>
 
         <div className="flex items-center">
