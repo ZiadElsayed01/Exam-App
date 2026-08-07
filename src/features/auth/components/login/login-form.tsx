@@ -23,7 +23,7 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
-      password: "",
+      password: "Ziadelsayed_100",
     },
   });
 
@@ -47,7 +47,7 @@ export default function LoginForm() {
                 aria-invalid={fieldState.invalid}
                 type="text"
                 autoComplete="username"
-                placeholder="user123"
+                placeholder="Admin: Ziad, User: Ziad0"
                 className={fieldState.invalid ? "border-destructive" : ""}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
